@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div>
+    <form method="post">
+        <input type="text" name="execution" placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' " />
+        <input type="text" name="specialization" placeholder="Введите специализацию">
+        <button type="submit">Добавить</button>
+    </form>
+</div>
+<div>Список занятий</div>
+{{#messages}}
+<div>
+    <b>{{id}}</b>
+    <span>{{text}}</span>
+    <i>{{tag}}</i>
+</div>
+{{/messages}}
+</body>
+</html>

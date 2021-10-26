@@ -4,35 +4,45 @@ import com.NCProject.MusicSchool.Specialization;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.Set;
+
 
 @Entity
+@Table(name = "lessons")
 public class Lesson {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Specialization specialization;
     private LocalDateTime execution;
-    @Transient
-    private Teacher teacher;
 
-    private String teacherLogin;
+    private Specialization specialization;
 
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    Set<User> users;
 
-    @Transient
-    private List<Student> students;
-    @Transient
-    private final int maxStudents = 4;
-
-    public Specialization getSpecialization() {
-        return specialization;
+    public Lesson() {
     }
 
-    public void setSpecialization(Specialization specialization) {
+    public Lesson(LocalDateTime execution, Specialization specialization) {
+        this.execution = execution;
         this.specialization = specialization;
+    }
+
+    public Lesson(LocalDateTime execution, Specialization specialization, Set<User> users) {
+        this.execution = execution;
+        this.specialization = specialization;
+        this.users = users;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDateTime getExecution() {
@@ -43,35 +53,20 @@ public class Lesson {
         this.execution = execution;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public Specialization getSpecialization() {
+        return specialization;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public boolean isActive() {
-        return execution.isBefore(LocalDateTime.now());
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
-
-    public boolean addStudent(Student student) throws Exception {
-        if (students.size() <= maxStudents) {
-            students.add(student);
-            return true;
-        } else {
-            return false;
-           // throw new Exception("the List Of Students is full");
-        }
-    }
-
-    public boolean removeStudent(Student student) {
-        return students.remove(student);
-    }
-
 
 }

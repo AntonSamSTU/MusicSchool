@@ -2,23 +2,64 @@ package com.NCProject.MusicSchool.Models;
 
 import com.NCProject.MusicSchool.Specialization;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class Teacher {
-
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name, surname, login, password;
 
-    private int stage;
+    @Transient
+    private String confirmPassword;
+
+    private int stage = 0;
 
     Specialization specialization;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
+
+    public User() {
+
+    }
+
+    public User(String name, String surname, String login, String password, Specialization specialization) {
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.specialization = specialization;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
 
     public String getLogin() {
         return login;
@@ -68,13 +109,4 @@ public class Teacher {
         this.specialization = specialization;
     }
 
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", login='" + login + '\'' +
-                ", stage=" + stage +
-                '}';
-    }
 }
