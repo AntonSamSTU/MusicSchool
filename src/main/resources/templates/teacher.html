@@ -3,18 +3,22 @@
 <body>
 <div>
     <form method="post">
-        <input type="text" name="execution" placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' " />
+        <input type="text" name="execution" placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' "/>
         <input type="text" name="specialization" placeholder="Введите специализацию">
         <button type="submit">Добавить</button>
     </form>
 </div>
 <div>Список занятий</div>
-{{#messages}}
-<div>
-    <b>{{id}}</b>
-    <span>{{text}}</span>
-    <i>{{tag}}</i>
-</div>
-{{/messages}}
+<table border="1">
+    <tr>
+        <th>execution</th>
+        <th>specialization</th>
+        <th>users</th>
+    </tr>
+    <tr th:each="lesson : ${lessons}">
+        <td th:utext="${lesson.execution}">execution</td>
+        <td th:utext="${lesson.specialization}">specialization</td>
+        <td th:utext="${lesson.users}">users</td>
+</table>
 </body>
 </html>

@@ -1,18 +1,18 @@
 package com.NCProject.MusicSchool.Models;
 
-import com.NCProject.MusicSchool.Specialization;
-
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String name, surname, login, password;
+    private String name, surname, username, password;
 
     @Transient
     private String confirmPassword;
@@ -22,17 +22,20 @@ public class User {
     Specialization specialization;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
 
     public User() {
 
     }
 
-    public User(String name, String surname, String login, String password, Specialization specialization) {
+    public User(String name, String surname, String username, String password, Specialization specialization) {
         this.name = name;
         this.surname = surname;
-        this.login = login;
+        this.username = username;
         this.password = password;
         this.specialization = specialization;
     }
@@ -61,12 +64,12 @@ public class User {
         this.confirmPassword = confirmPassword;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -107,6 +110,11 @@ public class User {
 
     public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
+    }
+
+    @Override
+    public String toString() {
+        return username;
     }
 
 }

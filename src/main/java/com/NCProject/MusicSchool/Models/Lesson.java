@@ -1,7 +1,5 @@
 package com.NCProject.MusicSchool.Models;
 
-import com.NCProject.MusicSchool.Specialization;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
