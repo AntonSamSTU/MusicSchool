@@ -15,6 +15,7 @@ public class Lesson {
 
     private LocalDateTime execution;
 
+    @Enumerated(EnumType.STRING)
     private Specialization specialization;
 
 

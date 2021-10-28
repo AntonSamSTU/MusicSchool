@@ -23,6 +23,7 @@ public class User implements UserDetails {
 
     private int stage = 0;
 
+    @Enumerated(EnumType.STRING)
     Specialization specialization;
 
 
