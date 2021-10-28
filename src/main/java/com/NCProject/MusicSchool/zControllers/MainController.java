@@ -18,9 +18,6 @@ public class MainController {
 
     //take user's repo
 
-    @Autowired
-    private LessonRepository lessonRepository;
-
 
     @GetMapping
     public String main(Model model) {
@@ -29,38 +26,8 @@ public class MainController {
         return "main";
     }
 
-    @GetMapping("/student") //take user's request
-    public String home(Model model) { //returns someone template for  U request
-        //   Iterable<Lesson> lessons = lessonRepository.findAll();
-        model.addAttribute("about", "Это страница студента, на которой" +
-                " ему надо будет записаться на курс из предложенных");
-        //   model.addAttribute("lessons", lessons);
 
-        return "student";
-    }
 
-    @GetMapping("/teacher") //take user's request
-    public String teacher(Model model) { //returns someone template for  U request
-        Iterable<Lesson> lessons = lessonRepository.findAll();
-
-        model.addAttribute("lessons", lessons);
-
-        return "teacher";
-    }
-
-    @PostMapping("/teacher")
-    public String addLesson(@RequestParam String execution, @RequestParam String specialization, Model model) {
-        try {
-            Lesson lesson = new Lesson(LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                    Specialization.valueOf(specialization.toUpperCase()));
-            lessonRepository.save(lesson);
-            Iterable<Lesson> lessons = lessonRepository.findAll();
-            model.addAttribute("lessons", lessons);
-        } catch (Exception e) {
-
-        }
-        return "teacher";
-    }
 
 //    public static void main(String[] args) {
 //        MainController mainController = new MainController();
