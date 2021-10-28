@@ -1,6 +1,6 @@
 package com.NCProject.MusicSchool.repo;
 
-import com.NCProject.MusicSchool.Models.Lesson;
+import com.NCProject.MusicSchool.models.Lesson;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDateTime;

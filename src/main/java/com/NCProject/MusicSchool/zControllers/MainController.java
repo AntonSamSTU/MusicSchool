@@ -1,7 +1,7 @@
 package com.NCProject.MusicSchool.zControllers;
 
-import com.NCProject.MusicSchool.Models.Lesson;
-import com.NCProject.MusicSchool.Models.Specialization;
+import com.NCProject.MusicSchool.models.Lesson;
+import com.NCProject.MusicSchool.models.Specialization;
 import com.NCProject.MusicSchool.repo.LessonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

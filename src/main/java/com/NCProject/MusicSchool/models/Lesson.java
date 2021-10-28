@@ -1,4 +1,4 @@
-package com.NCProject.MusicSchool.Models;
+package com.NCProject.MusicSchool.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

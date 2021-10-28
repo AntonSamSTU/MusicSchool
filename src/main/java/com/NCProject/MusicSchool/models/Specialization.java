@@ -1,4 +1,4 @@
-package com.NCProject.MusicSchool.Models;
+package com.NCProject.MusicSchool.models;
 
 public enum Specialization {
     VOCAL,
