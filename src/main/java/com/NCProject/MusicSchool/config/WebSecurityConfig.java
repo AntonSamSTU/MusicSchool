@@ -31,7 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                     .authorizeRequests()
-                    .antMatchers("/student/**").hasRole(String.valueOf(Role.STUDENT))
+
+                    .antMatchers("/student/").hasRole(String.valueOf(Role.STUDENT))
                     .antMatchers("/teacher/**").hasRole(String.valueOf(Role.TEACHER))
                     .antMatchers("/", "/registration").permitAll()//на главную страничку мы разрешаем волный доступ
                     .anyRequest().authenticated()

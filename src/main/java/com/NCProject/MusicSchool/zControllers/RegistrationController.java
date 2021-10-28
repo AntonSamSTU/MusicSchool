@@ -4,6 +4,7 @@ import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,9 @@ import java.util.Set;
 
 @Controller
 public class RegistrationController {
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserRepository userRepository;
 
@@ -33,7 +37,7 @@ public class RegistrationController {
             return "registration";
         } else {
             user.setUsername(username);
-            user.setPassword(password);
+            user.setPassword(bCryptPasswordEncoder.encode(password));
             user.setName(name);
             user.setSurname(surname);
             user.setRoles(Set.of(Role.USER, Role.STUDENT));
