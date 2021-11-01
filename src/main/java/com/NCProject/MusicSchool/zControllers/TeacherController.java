@@ -2,8 +2,10 @@ package com.NCProject.MusicSchool.zControllers;
 
 import com.NCProject.MusicSchool.models.Lesson;
 import com.NCProject.MusicSchool.models.Specialization;
+import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +31,10 @@ public class TeacherController {
     }
 
     @PostMapping("/teacher")
-    public String addLesson(@RequestParam String execution, @RequestParam String specialization, Model model) {
+    public String addLesson(@AuthenticationPrincipal User teacher, @RequestParam String execution, @RequestParam String specialization, Model model) {
         try {
             Lesson lesson = new Lesson(LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                    Specialization.valueOf(specialization.toUpperCase()));
+                    Specialization.valueOf(specialization.toUpperCase()), teacher);
             lessonRepository.save(lesson);
             Iterable<Lesson> lessons = lessonRepository.findAll();
             model.addAttribute("lessons", lessons);

@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
             user.setPassword(bCryptPasswordEncoder.encode(password));
             user.setName(name);
             user.setSurname(surname);
-            user.setRoles(Set.of(Role.USER, Role.STUDENT));
+            user.setRoles(Set.of(Role.USER, Role.TEACHER));
             userRepository.save(user);
             return true;
         } else {

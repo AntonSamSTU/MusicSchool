@@ -11,14 +11,17 @@
 <div>Список занятий</div>
 <table border="1">
     <tr>
+        <th>teacher</th>
         <th>execution</th>
         <th>specialization</th>
         <th>users</th>
     </tr>
     <tr th:each="lesson : ${lessons}">
+        <td th:utext="${lesson.teacher}">teacher</td>
         <td th:utext="${lesson.execution}">execution</td>
         <td th:utext="${lesson.specialization}">specialization</td>
         <td th:utext="${lesson.users}">users</td>
+
 </table>
 </body>
 </html>

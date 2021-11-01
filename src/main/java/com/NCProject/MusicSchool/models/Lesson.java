@@ -18,6 +18,9 @@ public class Lesson {
     @Enumerated(EnumType.STRING)
     private Specialization specialization;
 
+    @ManyToOne(fetch = FetchType.EAGER) //одному тичеру соответскует множество уроков
+    @JoinColumn(name ="user_id")
+    User teacher;
 
     @ManyToMany(fetch = FetchType.EAGER)
     Set<User> users;
@@ -25,15 +28,25 @@ public class Lesson {
     public Lesson() {
     }
 
-    public Lesson(LocalDateTime execution, Specialization specialization) {
+    public Lesson(LocalDateTime execution, Specialization specialization, User teacher) {
         this.execution = execution;
         this.specialization = specialization;
+        this.teacher = teacher;
     }
 
-    public Lesson(LocalDateTime execution, Specialization specialization, Set<User> users) {
+    public Lesson(LocalDateTime execution, Specialization specialization, User teacher, Set<User> users) {
         this.execution = execution;
         this.specialization = specialization;
+        this.teacher = teacher;
         this.users = users;
+    }
+
+    public User getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
     }
 
     public Long getId() {
