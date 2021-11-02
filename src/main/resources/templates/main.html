@@ -6,8 +6,13 @@
     </head>
         <body>
         <p th:text="'Hello, ' + ${about} + '!'"/>
+
         </body>
-    <footer><form th:action="@{/logout}" method="post">
+    <footer>
+
+        <a href="/login"> <input type="submit" value="Login"/> </a>
+
+        <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
     </form></footer>
 </html>

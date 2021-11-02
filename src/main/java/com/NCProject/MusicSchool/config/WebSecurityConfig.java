@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-  public   UserService userService;
+    public UserService userService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -31,11 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                     .authorizeRequests()
-
-                    .antMatchers("/student/").hasRole(String.valueOf(Role.STUDENT))
+                    .antMatchers("/registration/**").not().fullyAuthenticated()
+                    .antMatchers("/admin/**").hasRole(String.valueOf(Role.ADMIN))
+                    .antMatchers("/student/**").hasRole(String.valueOf(Role.STUDENT))
                     .antMatchers("/teacher/**").hasRole(String.valueOf(Role.TEACHER))
-                    .antMatchers("/", "/registration").permitAll()//на главную страничку мы разрешаем волный доступ
-                    .anyRequest().authenticated()
+                    .antMatchers("/").permitAll()//на главную страничку мы разрешаем волный доступ
+               //     .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .loginPage("/login")
@@ -44,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout()
                     .permitAll();
+
     }
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

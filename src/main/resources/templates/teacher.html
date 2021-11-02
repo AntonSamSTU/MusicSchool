@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div>
-    <form method="post">
-        <input type="text" name="execution" placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' "/>
-        <input type="text" name="specialization" placeholder="Введите специализацию">
+    <form th:action="@{/teacher}" method="post">
+        <input type= "text" name="execution" placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' "/>
+       <!--    <input type="text" name="specialization" placeholder="Введите специализацию"> -->
         <button type="submit">Добавить</button>
     </form>
 </div>
@@ -14,13 +14,13 @@
         <th>teacher</th>
         <th>execution</th>
         <th>specialization</th>
-        <th>users</th>
+        <th>students</th>
     </tr>
     <tr th:each="lesson : ${lessons}">
         <td th:utext="${lesson.teacher}">teacher</td>
         <td th:utext="${lesson.execution}">execution</td>
         <td th:utext="${lesson.specialization}">specialization</td>
-        <td th:utext="${lesson.users}">users</td>
+        <td th:utext="${lesson.users}">students</td>
 
 </table>
 </body>

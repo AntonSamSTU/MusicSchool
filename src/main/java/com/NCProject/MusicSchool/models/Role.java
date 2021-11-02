@@ -13,6 +13,8 @@ public enum Role implements GrantedAuthority {
     public String getAuthority() {
     //    return String.valueOf(this);
         return "ROLE_" + this;
+
+     //   return name();
     }
 
 //    public static void main(String[] args) {
