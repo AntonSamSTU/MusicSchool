@@ -11,11 +11,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -45,14 +47,10 @@ public class TeacherController {
         Set<User> users = new java.util.HashSet<>(Set.of());
         for (User value :
                 usersFromDB) {
-            if( !value.getUsername().equals(teacher.getUsername()))  users.add(value);
+            if (!value.getUsername().equals(teacher.getUsername())) users.add(value);
         }
-       // users.remove(teacher);
+
         try {
-
-//            Lesson lesson = new Lesson(LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-//                    Specialization.valueOf(specialization.toUpperCase()), teacher);
-
             Lesson lesson = new Lesson(LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
                     teacher.getSpecialization(), teacher);
 
@@ -64,9 +62,26 @@ public class TeacherController {
         } catch (Exception e) {
 
         }
-            Iterable<Lesson> lessons = lessonRepository.findAll();
-            model.addAttribute("lessons", lessons);
+        Iterable<Lesson> lessons = lessonRepository.findAll();
+        model.addAttribute("lessons", lessons);
 
         return "teacher";
+    }
+
+    @PostMapping("/teacher/delete/{lessonId}")
+    public String deleteLesson(@AuthenticationPrincipal User teacher, @PathVariable("lessonId") Long lessonId,
+                               @RequestParam(required = true, defaultValue = "") String action,
+                               Model model) {
+        if (action.equals("delete")) {
+            Lesson lessonFromDB = lessonRepository.findById(lessonId).get();
+            if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
+                lessonRepository.deleteById(lessonId);
+            }
+        }
+        if (action.equals("update")) {
+            Lesson lessonFromDB = lessonRepository.findById(lessonId).get();
+
+        }
+        return "redirect:/teacher";
     }
 }
