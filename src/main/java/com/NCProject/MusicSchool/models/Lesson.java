@@ -81,4 +81,25 @@ public class Lesson {
         this.users = users;
     }
 
+    //todo
+    public boolean removeUserByUsername(String username){
+
+        for (User value:
+             users) {
+            if (value.getUsername().equals(username)){
+                return users.remove(value);
+            }
+        }
+        return false;
+    }
+
+    public boolean addUser(User user){
+        for (User value:
+             users) {
+            if(value.getUsername().equals(user.getUsername())) return false;
+        }
+        users.add(user);
+        return true;
+    }
+
 }

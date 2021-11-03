@@ -16,6 +16,7 @@
         <th>execution</th>
         <th>specialization</th>
         <th>students</th>
+        <th>delete</th>
     </tr>
     <tr th:each="lesson : ${lessons}">
 
@@ -27,7 +28,7 @@
         <td>
             <form th:action="@{/teacher/delete/{lessonId}(lessonId=${lesson.id})}" method="post">
                 <input type="hidden" name="action" value="delete"/>
-                <button type="submit">Delete</button>
+                 <button type="submit">Delete</button>
             </form>
         </td>
         <td>
@@ -38,7 +39,7 @@
                 <input type="text" name="execution" placeholder="'yyyy-MM-dd HH:mm'"/>
                 <button type="submit">Update</button>
             </form>
-        </td>
+       </td>
 
 </table>
 </body>

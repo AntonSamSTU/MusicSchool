@@ -33,6 +33,7 @@ public class TeacherController {
     @Autowired
     UserRepository userRepository;
 
+
     @GetMapping("/teacher") //take user's request
     public String teacher(Model model) { //returns someone template for  U request
         List<Lesson> lessons = lessonRepository.findAll();
