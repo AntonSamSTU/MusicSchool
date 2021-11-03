@@ -45,19 +45,21 @@ public class TeacherController {
 
     @PostMapping("/teacher")
     public String addLesson(@AuthenticationPrincipal User teacher, @RequestParam String execution, Model model) {
+        //ищем всех юзеров в БД, у которых такая же специальность, как у учителя
         Iterable<User> usersFromDB = userRepository.findBySpecialization(teacher.getSpecialization());
-        Set<User> users = new java.util.HashSet<>(Set.of());
+        Set<User> students = new java.util.HashSet<>(Set.of());
         for (User value :
                 usersFromDB) {
-            if (!value.getUsername().equals(teacher.getUsername())) users.add(value);
+            //что бы не добавить в ученики учителя
+            if (!value.getUsername().equals(teacher.getUsername())) students.add(value);
         }
 
         try {
             Lesson lesson = new Lesson(LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
                     teacher.getSpecialization(), teacher);
 
-            if (users.size() > 0) {
-                lesson.setUsers(users);
+            if (students.size() > 0) {
+                lesson.setUsers(students);
             }
 
             lessonRepository.save(lesson);

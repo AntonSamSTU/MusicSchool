@@ -11,15 +11,9 @@ public enum Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-    //    return String.valueOf(this);
         return "ROLE_" + this;
-
      //   return name();
     }
 
-//    public static void main(String[] args) {
-//        Role role = Role.STUDENT;
-//
-//        System.out.println(role.getAuthority());
-//    }
+
 }
