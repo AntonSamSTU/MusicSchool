@@ -1,7 +1,6 @@
 package com.NCProject.MusicSchool.zControllers;
 
 import com.NCProject.MusicSchool.models.Lesson;
-import com.NCProject.MusicSchool.models.Specialization;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
 import com.NCProject.MusicSchool.repo.UserRepository;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -62,10 +60,12 @@ public class TeacherController {
         } catch (Exception e) {
 
         }
-        Iterable<Lesson> lessons = lessonRepository.findAll();
-        model.addAttribute("lessons", lessons);
 
-        return "teacher";
+        return teacher(model);
+//        Iterable<Lesson> lessons = lessonRepository.findAll();
+//        model.addAttribute("lessons", lessons);
+//
+//        return "teacher";
     }
 
     @PostMapping("/teacher/delete/{lessonId}")
@@ -78,10 +78,29 @@ public class TeacherController {
                 lessonRepository.deleteById(lessonId);
             }
         }
-        if (action.equals("update")) {
-            Lesson lessonFromDB = lessonRepository.findById(lessonId).get();
 
-        }
         return "redirect:/teacher";
+    }
+
+    @PostMapping("/teacher/update/{lessonId}")
+    public String updateLesson(@AuthenticationPrincipal User teacher, @PathVariable("lessonId") Long lessonId,
+                               @RequestParam(required = true, defaultValue = "") String action,
+                               Model model, @RequestParam String execution) {
+
+        if (action.equals("update")) {
+            try {
+                LocalDateTime newExecution = LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+                Lesson lessonFromDB = lessonRepository.getById(lessonId);
+                lessonRepository.deleteById(lessonId);
+                lessonFromDB.setExecution(newExecution);
+                lessonRepository.save(lessonFromDB);
+            } catch (Exception e) {
+                model.addAttribute("message", e.getMessage());
+            }
+        }
+
+        return "redirect:/teacher";
+    //    return teacher(model);
     }
 }

@@ -11,7 +11,7 @@
 <div>Список занятий</div>
 <table border="1">
     <tr>
-        <th>id</th>
+     <!--   <th>id</th> -->
         <th>teacher</th>
         <th>execution</th>
         <th>specialization</th>
@@ -19,7 +19,7 @@
     </tr>
     <tr th:each="lesson : ${lessons}">
 
-        <td th:utext="${lesson.id}">id</td>
+  <!--      <td th:utext="${lesson.id}">id</td> -->
         <td th:utext="${lesson.teacher}">teacher</td>
         <td th:utext="${lesson.execution}">execution</td>
         <td th:utext="${lesson.specialization}">specialization</td>
@@ -31,8 +31,11 @@
             </form>
         </td>
         <td>
-            <form th:action="@{/teacher/delete/{lessonId}(lessonId=${lesson.id})}" method="post">
+            <form th:action="@{/teacher/update/{lessonId}(lessonId=${lesson.id})}" method="post">
+
+                <p th:text= "${message}"/>
                 <input type="hidden" name="action" value="update"/>
+                <input type="text" name="execution" placeholder="'yyyy-MM-dd HH:mm'"/>
                 <button type="submit">Update</button>
             </form>
         </td>
