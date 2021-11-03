@@ -91,20 +91,21 @@ public class TeacherController {
                                @RequestParam(required = true, defaultValue = "") String action,
                                Model model, @RequestParam String execution) {
 
-        if (action.equals("update")) {
-            try {
-                LocalDateTime newExecution = LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        Lesson lessonFromDB = lessonRepository.getById(lessonId);
 
-                Lesson lessonFromDB = lessonRepository.getById(lessonId);
-                lessonRepository.deleteById(lessonId);
-                lessonFromDB.setExecution(newExecution);
-                lessonRepository.save(lessonFromDB);
-            } catch (Exception e) {
-                model.addAttribute("message", e.getMessage());
+        if (action.equals("update")) {
+            if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
+                try {
+                    LocalDateTime newExecution = LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+                    lessonRepository.deleteById(lessonId);
+                    lessonFromDB.setExecution(newExecution);
+                    lessonRepository.save(lessonFromDB);
+                } catch (Exception e) {
+                    model.addAttribute("message", e.getMessage());
+                }
             }
         }
-
         return "redirect:/teacher";
-    //    return teacher(model);
+        //    return teacher(model);
     }
 }
