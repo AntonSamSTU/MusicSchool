@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -32,7 +35,8 @@ public class TeacherController {
 
     @GetMapping("/teacher") //take user's request
     public String teacher(Model model) { //returns someone template for  U request
-        Iterable<Lesson> lessons = lessonRepository.findAll();
+        List<Lesson> lessons = lessonRepository.findAll();
+        lessons.sort(Comparator.comparing(Lesson::getExecution));
 
         model.addAttribute("lessons", lessons);
 
