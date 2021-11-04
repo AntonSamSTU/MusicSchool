@@ -1,5 +1,6 @@
 package com.NCProject.MusicSchool.models;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,7 +14,7 @@ public class User implements UserDetails {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) //TODO чекнуть вариации генерации
     private Long id;
 
     private String name, surname, username, password;

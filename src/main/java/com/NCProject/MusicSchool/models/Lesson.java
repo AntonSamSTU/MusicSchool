@@ -19,7 +19,7 @@ public class Lesson {
     private Specialization specialization;
 
     @ManyToOne(fetch = FetchType.EAGER) //одному тичеру соответскует множество уроков
-    @JoinColumn(name ="user_id")
+    @JoinColumn(name ="teacher_id")
     User teacher;
 
     @ManyToMany(fetch = FetchType.EAGER)
