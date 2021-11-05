@@ -1,5 +1,7 @@
 package com.NCProject.MusicSchool.models;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -19,10 +21,13 @@ public class Lesson {
     private Specialization specialization;
 
     @ManyToOne(fetch = FetchType.EAGER) //одному тичеру соответскует множество уроков
+   // @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @JoinColumn(name ="teacher_id")
     User teacher;
 
     @ManyToMany(fetch = FetchType.EAGER)
+ //   @Cascade(org.hibernate.annotations.CascadeType.DELETE)
+    @JoinTable(name = "lessons_users")
     Set<User> users;
 
     public Lesson() {

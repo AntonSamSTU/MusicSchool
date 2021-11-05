@@ -1,10 +1,10 @@
 package com.NCProject.MusicSchool.service;
 
+import com.NCProject.MusicSchool.models.Lesson;
 import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -44,7 +43,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUser(Long UserID) {
-        return userRepository.findById(UserID).orElse(new User());
+        return userRepository.findById(UserID).orElse(null);
     }
 
     public List<User> findAllUsers() {
@@ -74,20 +73,20 @@ public class UserService implements UserDetailsService {
     public boolean deleteUser(Long userID) {
         //TODO удалить ссылку в таблице lessons_users, если мы удаляем ученика и ссылку в таблице lessons, если мы удаляем учителя
 
-        User userFromDB = findUser(userID);
-
-        //если пустой, то возвращаем false
-        if (userFromDB.equals(new User()) || userFromDB.getRoles().contains(Role.ADMIN)) {
-            return false;
-        }
-
-        if(userFromDB.getRoles().contains(Role.STUDENT)){
-            entityManager.createQuery("DELETE from lessons_users WHERE users_id =" +"'"+ userID +"'");
-        }
-
-        if(userFromDB.getRoles().contains(Role.TEACHER)){
-            entityManager.createQuery("DELETE from lessons WHERE teacher_id =" +"'"+ userID +"'");
-        }
+//        User userFromDB = findUser(userID);
+//
+//        //если пустой, то возвращаем false
+//        if (userFromDB == null || userFromDB.getRoles().contains(Role.ADMIN)) {
+//            return false;
+//        }
+//
+//        if(userFromDB.getRoles().contains(Role.STUDENT)){
+//            entityManager.createQuery("DELETE from lessons_users WHERE users_id =" +"'"+ userID +"'", Lesson.class);
+//        }
+//
+//        if(userFromDB.getRoles().contains(Role.TEACHER)){
+//            entityManager.createQuery("DELETE from lessons WHERE teacher_id =" +"'"+ userID +"'", Lesson.class);
+//        }
 
         userRepository.deleteById(userID);
 
