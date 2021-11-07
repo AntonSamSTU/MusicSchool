@@ -3,6 +3,7 @@ package com.NCProject.MusicSchool.service;
 import com.NCProject.MusicSchool.models.Lesson;
 import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.User;
+import com.NCProject.MusicSchool.repo.LessonRepository;
 import com.NCProject.MusicSchool.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    LessonRepository lessonRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -57,7 +61,7 @@ public class UserService implements UserDetailsService {
             user.setPassword(bCryptPasswordEncoder.encode(password));
             user.setName(name);
             user.setSurname(surname);
-            user.setRoles(Set.of(Role.USER, Role.STUDENT));
+            user.setRoles(Set.of(Role.USER, Role.TEACHER)); //TODO
             userRepository.save(user);
             return true;
         } else {
@@ -71,26 +75,23 @@ public class UserService implements UserDetailsService {
 //    }
 
     public boolean deleteUser(Long userID) {
-        //TODO удалить ссылку в таблице lessons_users, если мы удаляем ученика и ссылку в таблице lessons, если мы удаляем учителя
 
-//        User userFromDB = findUser(userID);
-//
-//        //если пустой, то возвращаем false
-//        if (userFromDB == null || userFromDB.getRoles().contains(Role.ADMIN)) {
-//            return false;
-//        }
-//
-//        if(userFromDB.getRoles().contains(Role.STUDENT)){
-//            entityManager.createQuery("DELETE from lessons_users WHERE users_id =" +"'"+ userID +"'", Lesson.class);
-//        }
-//
-//        if(userFromDB.getRoles().contains(Role.TEACHER)){
-//            entityManager.createQuery("DELETE from lessons WHERE teacher_id =" +"'"+ userID +"'", Lesson.class);
-//        }
+        User userFromDB = findUser(userID);
+        if (userFromDB == null || userFromDB.getRoles().contains(Role.ADMIN)) {
+            return false;
+        }
 
+        //  entityManager.createQuery("DELETE from users WHERE id = " +"'"+ userID +"'", User.class);
+
+        if(userFromDB.getRoles().contains(Role.TEACHER)){
+
+            lessonRepository.deleteAll(lessonRepository.findByTeacher(userFromDB));
+        }
+
+        //TODO удалить ссылки в таблице отношений для студента. КАК?
         userRepository.deleteById(userID);
 
-        return userRepository.existsById(userID);
+        return !userRepository.existsById(userID);
 
 
     }

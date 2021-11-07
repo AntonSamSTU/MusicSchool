@@ -33,6 +33,9 @@ public class TeacherController {
     @Autowired
     UserRepository userRepository;
 
+    public Lesson findLesson(Long lessonID){
+        return lessonRepository.findById(lessonID).orElse(null);
+    }
 
     @GetMapping("/teacher") //take user's request
     public String teacher(Model model) { //returns someone template for  U request
@@ -48,6 +51,7 @@ public class TeacherController {
     public String addLesson(@AuthenticationPrincipal User teacher, @RequestParam String execution, Model model) {
         //ищем всех юзеров в БД, у которых такая же специальность, как у учителя
         Iterable<User> usersFromDB = userRepository.findBySpecialization(teacher.getSpecialization());
+
         Set<User> students = new java.util.HashSet<>(Set.of());
         for (User value :
                 usersFromDB) {
@@ -80,9 +84,12 @@ public class TeacherController {
                                @RequestParam(required = true, defaultValue = "") String action,
                                Model model) {
         if (action.equals("delete")) {
-            Lesson lessonFromDB = lessonRepository.findById(lessonId).get();
-            if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
-                lessonRepository.deleteById(lessonId);
+           // Lesson lessonFromDB = lessonRepository.findById(lessonId).get();
+            Lesson lessonFromDB = findLesson(lessonId);
+            if(lessonFromDB != null) {
+                if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
+                    lessonRepository.deleteById(lessonId);
+                }
             }
         }
 
@@ -96,12 +103,15 @@ public class TeacherController {
 
         Lesson lessonFromDB = lessonRepository.getById(lessonId);
 
+        Long testiD = lessonFromDB.getId();
         if (action.equals("update")) {
             if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
                 try {
                     LocalDateTime newExecution = LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-                    lessonRepository.deleteById(lessonId);
+           //         lessonRepository.deleteById(lessonId);
                     lessonFromDB.setExecution(newExecution);
+
+                    //метод save() работает как update, если в БД есть поле, у которого такое же ID, как у объекта
                     lessonRepository.save(lessonFromDB);
                 } catch (Exception e) {
                     model.addAttribute("message", e.getMessage());
