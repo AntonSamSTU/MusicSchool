@@ -46,8 +46,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    public User findUser(Long UserID) {
-        return userRepository.findById(UserID).orElse(null);
+    public User findUser(Long userID) {
+        return userRepository.findById(userID).orElse(null);
     }
 
     public List<User> findAllUsers() {
@@ -61,12 +61,17 @@ public class UserService implements UserDetailsService {
             user.setPassword(bCryptPasswordEncoder.encode(password));
             user.setName(name);
             user.setSurname(surname);
-            user.setRoles(Set.of(Role.USER, Role.TEACHER)); //TODO
+            user.setRoles(Set.of(Role.USER, Role.TEACHER )); //TODO
             userRepository.save(user);
             return true;
         } else {
             return false;
         }
+    }
+
+    public boolean saveUser(User user){
+        userRepository.save(user);
+        return userRepository.existsById(user.getId());
     }
 //
 //    public boolean deleteUser(User user) {

@@ -28,12 +28,17 @@
             <form th:action="@{/admin/delete/{userID}(userID=${user.id})}" method="post">
                 <input type="hidden" name="action" value="delete"/>
                 <button type="submit">Delete</button>
-
             </form>
         </td>
         <td>
             <form th:action="@{/admin/update/{userID}(userID=${user.id})}" method="post">
-                <input type="hidden" name="action" value="Update"/>
+                <select type="text" name="roleString" required>
+                    <option value="">Выбрать</option>
+                    <option value="TEACHER">TEACHER</option>
+                    <option value="STUDENT">STUDENT</option>
+                    <option value="ADMIN">ADMIN</option>
+                </select>
+                <input type="hidden" name="action" value="update"/>
                 <button type="submit">Update</button>
             </form>
         </td>

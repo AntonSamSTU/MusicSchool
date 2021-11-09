@@ -41,7 +41,6 @@ public class TeacherController {
     public String teacher(Model model) { //returns someone template for  U request
         List<Lesson> lessons = lessonRepository.findAll();
         lessons.sort(Comparator.comparing(Lesson::getExecution));
-
         model.addAttribute("lessons", lessons);
 
         return "teacher";
@@ -102,8 +101,6 @@ public class TeacherController {
                                Model model, @RequestParam String execution) {
 
         Lesson lessonFromDB = lessonRepository.getById(lessonId);
-
-        Long testiD = lessonFromDB.getId();
         if (action.equals("update")) {
             if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
                 try {
