@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -40,7 +42,7 @@ public class AdminController {
                              Model model) {
         if (action.equals("delete")) {
 
-           // boolean j = userService.deleteUser(userID);
+            // boolean j = userService.deleteUser(userID);
             //TODO query's
         }
 
@@ -48,20 +50,24 @@ public class AdminController {
     }
 
     @PostMapping("/admin/update/{userID}")
-    public String updateUser(@AuthenticationPrincipal User admin, @PathVariable("userID") Long userID, @RequestParam String roleString,
+    public String updateUser(@AuthenticationPrincipal User admin, @PathVariable("userID") User userID, @RequestParam String roleString,
                              @RequestParam(required = true, defaultValue = "") String action,
                              Model model) {
         if (action.equals("update")) {
-            User userFromDB = userService.findUser(userID);
 
-            Role role = Role.valueOf(Role.class, roleString);
+            User user = userID;
 
-            userFromDB.setRoles(Set.of(Role.USER, role));
+            user.getRoles().clear();
 
+            user.getRoles().add(Role.USER);
 
-            userService.saveUser(userFromDB);
+            user.getRoles().add(Role.valueOf(roleString));
+
+            userService.saveUser(user);
 
             checkLessons();
+
+
         }
 
 
@@ -90,6 +96,7 @@ public class AdminController {
                 lessonRepository.delete(value);
             }
 
+            //TODO не отрабатывает.
             Set<User> valueUsers = value.getUsers();
             //удалили НЕстудента из из сета студентов и засетали в урок
             valueUsers.removeIf(valueUser -> !valueUser.getRoles().contains(Role.USER));
