@@ -28,6 +28,13 @@ public class Lesson {
     @ManyToMany(fetch = FetchType.EAGER)
     //@Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @JoinTable(name = "lessons_users")
+//            @JoinTable(
+//                    name = "lessons_users",
+//                    joinColumns = {@JoinColumn(name = "lesson_id")},
+//                    inverseJoinColumns  = {@JoinColumn(name = "student_id")}
+//
+//            )
+
     Set<User> users;
 
     public Lesson() {

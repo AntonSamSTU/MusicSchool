@@ -1,6 +1,7 @@
 package com.NCProject.MusicSchool.zControllers;
 
 import com.NCProject.MusicSchool.models.Lesson;
+import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
 import com.NCProject.MusicSchool.repo.UserRepository;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class TeacherController {
@@ -33,7 +31,7 @@ public class TeacherController {
     @Autowired
     UserRepository userRepository;
 
-    public Lesson findLesson(Long lessonID){
+    public Lesson findLesson(Long lessonID) {
         return lessonRepository.findById(lessonID).orElse(null);
     }
 
@@ -54,8 +52,8 @@ public class TeacherController {
         Set<User> students = new java.util.HashSet<>(Set.of());
         for (User value :
                 usersFromDB) {
-            //что бы не добавить в ученики учителя
-            if (!value.getUsername().equals(teacher.getUsername())) students.add(value);
+            //что бы не добавить в ученики учителей
+            if (value.getRoles().contains(Role.STUDENT)) students.add(value);
         }
 
         try {
@@ -83,9 +81,9 @@ public class TeacherController {
                                @RequestParam(required = true, defaultValue = "") String action,
                                Model model) {
         if (action.equals("delete")) {
-           // Lesson lessonFromDB = lessonRepository.findById(lessonId).get();
+            // Lesson lessonFromDB = lessonRepository.findById(lessonId).get();
             Lesson lessonFromDB = findLesson(lessonId);
-            if(lessonFromDB != null) {
+            if (lessonFromDB != null) {
                 if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
                     lessonRepository.deleteById(lessonId);
                 }
@@ -105,7 +103,7 @@ public class TeacherController {
             if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
                 try {
                     LocalDateTime newExecution = LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-           //         lessonRepository.deleteById(lessonId);
+                    //         lessonRepository.deleteById(lessonId);
                     lessonFromDB.setExecution(newExecution);
 
                     //метод save() работает как update, если в БД есть поле, у которого такое же ID, как у объекта
@@ -118,4 +116,6 @@ public class TeacherController {
         return "redirect:/teacher";
         //    return teacher(model);
     }
+
+
 }

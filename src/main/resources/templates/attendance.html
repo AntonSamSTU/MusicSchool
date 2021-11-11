@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance</title>
+</head>
+<body>
+
+<div>Students</div>
+
+<form th:action="@{/attendance/{lessonId}(lessonId=${lesson.id})}" method="post">
+    <table border="1">
+        <tr>
+            <th>username</th>
+        </tr>
+        <tr th:each="student : ${students}">
+
+            <td th:utext="${student.username}">id</td>
+
+            <td>
+                <input type="checkbox" name="action"  value="yes" />
+                <!--   <input type="hidden" value="${student.id}" name="studentId"> -->
+            </td>
+
+    </table>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>

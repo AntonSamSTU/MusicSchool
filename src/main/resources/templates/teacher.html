@@ -28,18 +28,23 @@
         <td>
             <form th:action="@{/teacher/delete/{lessonId}(lessonId=${lesson.id})}" method="post">
                 <input type="hidden" name="action" value="delete"/>
-                 <button type="submit">Delete</button>
+                <button type="submit">Delete</button>
             </form>
         </td>
         <td>
             <form th:action="@{/teacher/update/{lessonId}(lessonId=${lesson.id})}" method="post">
 
-                <p th:text= "${message}"/>
+                <p th:text="${message}"/>
                 <input type="hidden" name="action" value="update"/>
                 <input type="text" name="execution" placeholder="'yyyy-MM-dd HH:mm'"/>
                 <button type="submit">Update</button>
             </form>
-       </td>
+        </td>
+        <td>
+            <form th:action="@{/attendance/{lessonId}(lessonId=${lesson.id})}" method="get">
+                <input type="submit" value="Attendance"/> </a>
+            </form>
+        </td>
 
 </table>
 </body>

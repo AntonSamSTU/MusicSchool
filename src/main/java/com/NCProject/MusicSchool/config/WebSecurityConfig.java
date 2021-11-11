@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin/**").hasRole(String.valueOf(Role.ADMIN))
                     .antMatchers("/student/**").hasRole(String.valueOf(Role.STUDENT))
                     .antMatchers("/teacher/**").hasRole(String.valueOf(Role.TEACHER))
+                    .antMatchers("/attendance/**").hasRole(String.valueOf(Role.TEACHER))
                     .antMatchers("/").permitAll()//на главную страничку мы разрешаем волный доступ
                //     .anyRequest().authenticated()
                 .and()

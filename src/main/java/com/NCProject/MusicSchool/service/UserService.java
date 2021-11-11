@@ -61,7 +61,7 @@ public class UserService implements UserDetailsService {
             user.setPassword(bCryptPasswordEncoder.encode(password));
             user.setName(name);
             user.setSurname(surname);
-            user.setRoles(Set.of(Role.USER, Role.TEACHER )); //TODO
+            user.setRoles(Set.of(Role.USER, Role.STUDENT )); //TODO
             userRepository.save(user);
             return true;
         } else {
@@ -72,6 +72,10 @@ public class UserService implements UserDetailsService {
     public boolean saveUser(User user){
         userRepository.save(user);
         return userRepository.existsById(user.getId());
+    }
+
+    public void saveAllUsers(Iterable<User> users){
+        userRepository.saveAll(users);
     }
 //
 //    public boolean deleteUser(User user) {

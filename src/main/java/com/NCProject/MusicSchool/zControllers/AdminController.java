@@ -80,27 +80,17 @@ public class AdminController {
 
     public void checkLessons() {
 
-        //TODO потестить метод
-
         List<Lesson> lessonsFromDB = lessonRepository.findAll();
-
-        //удалили урок, если учитель перестал быть таковым
-        //  lessonsFromDB.removeIf(value -> ! value.getTeacher().getRoles().contains(Role.TEACHER));
 
         for (Lesson value :
                 lessonsFromDB) {
-
             //удалили урок, если учитель перестал быть таковым
             if (!value.getTeacher().getRoles().contains(Role.TEACHER)) {
                 lessonsFromDB.remove(value);
                 lessonRepository.delete(value);
             }
-
-            //TODO не отрабатывает.
-            Set<User> valueUsers = value.getUsers();
             //удалили НЕстудента из из сета студентов и засетали в урок
-            valueUsers.removeIf(valueUser -> !valueUser.getRoles().contains(Role.USER));
-            value.setUsers(valueUsers);
+            value.getUsers().removeIf(user -> !user.getRoles().contains(Role.STUDENT));
         }
         lessonRepository.saveAll(lessonsFromDB);
     }

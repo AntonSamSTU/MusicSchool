@@ -144,6 +144,10 @@ public class User implements UserDetails {
         this.specialization = specialization;
     }
 
+    public void stagePlusPlus() {
+        stage++;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
