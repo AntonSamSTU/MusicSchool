@@ -44,26 +44,15 @@ public class AttendanceController {
 
     @PostMapping("attendance/{lessonId}") //take user's request
     public String teacherLessonAttendanceSave(@AuthenticationPrincipal User teacher, @PathVariable("lessonId") Lesson lessonId,
-                                              @RequestParam Map<String, String> form,
-                                              @RequestParam String [] studentId,
+                                              @RequestParam Long [] action,
                                               Model model) { //returns someone template for  U request
 
-        //TODO затуп с помощью таймлифа и дефолтных параметров решить.
-
-        boolean j = false;
-        //итерация по студентам
-        for (User student :
-                lessonId.getUsers()) {
-            //итерация по форме
-            for (String value : form.values()) {
-                if (value.contains("yes")) {
-                    student.stagePlusPlus();
-                }
-            }
+        for (Long userID:
+             action) {
+            User studentFromDB = userService.findUser(userID);
+            studentFromDB.stagePlusPlus();
+            userService.saveUser(studentFromDB);
         }
-
-        userService.saveAllUsers(lessonId.getUsers());
-
         return "redirect:/teacher";
     }
 }

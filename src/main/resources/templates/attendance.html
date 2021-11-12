@@ -18,7 +18,7 @@
             <td th:utext="${student.username}">id</td>
 
             <td>
-                <input type="checkbox" name="action"  value="yes" />
+                <input type="checkbox" name="action" th:value="${student.id}"  />
                 <!--   <input type="hidden" value="${student.id}" name="studentId"> -->
             </td>
 
