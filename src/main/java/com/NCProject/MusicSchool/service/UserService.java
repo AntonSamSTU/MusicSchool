@@ -2,6 +2,7 @@ package com.NCProject.MusicSchool.service;
 
 import com.NCProject.MusicSchool.models.Lesson;
 import com.NCProject.MusicSchool.models.Role;
+import com.NCProject.MusicSchool.models.Specialization;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
 import com.NCProject.MusicSchool.repo.UserRepository;
@@ -52,6 +53,11 @@ public class UserService implements UserDetailsService {
 
     public List<User> findAllUsers() {
         return userRepository.findAll();
+    }
+
+    public List<User> findBySpecialization(Specialization specialization)
+    {
+        return userRepository.findBySpecialization(specialization);
     }
 
     public boolean saveUser(User user, String username, String password, String name, String surname) {

@@ -32,8 +32,7 @@ public class AttendanceController {
             Model model) { //returns someone template for  U request
 
         Lesson lessonFromDB = lessonRepository.getById(lessonId);
-        //TODO поставить проверку, прошел ли урок к настоящему моменту, а после отметки удалить урок
-
+        //TODO если время урока > LocalDateTime.now(), то кнопка доступна, и после отмечания урок удаляется
 
         model.addAttribute("lesson", lessonFromDB);
 

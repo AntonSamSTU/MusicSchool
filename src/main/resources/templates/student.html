@@ -40,6 +40,20 @@
 
 
 </table>
+<div>Добавление персонального урока</div>
+<div>
+    <form th:action="@{/student/addLesson}" method="post">
+        <input type="text" name="execution" placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' "/>
 
+        <select id="teacher" name="teacher" required>
+            <option value="">Select Teacher</option>
+            <option th:each="teacher : ${teachers}" th:value="${teacher}" th:text="${teacher}"></option>
+        </select>
+        <button type="submit">Добавить</button>
+    </form>
+</div>
 </body>
+<footer>
+    <a href="/main"> <input type="submit" value="To Main"/> </a>
+</footer>
 </html>

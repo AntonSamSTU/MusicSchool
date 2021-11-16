@@ -1,9 +1,11 @@
 package com.NCProject.MusicSchool.zControllers;
 
 import com.NCProject.MusicSchool.models.Lesson;
+import com.NCProject.MusicSchool.models.Role;
+import com.NCProject.MusicSchool.models.Specialization;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
-import org.hibernate.engine.internal.Collections;
+import com.NCProject.MusicSchool.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,15 +15,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.Collections;
 
 @Controller
 public class StudentController {
 
     @Autowired
     LessonRepository lessonRepository;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/student") //take user's request
     public String student(@AuthenticationPrincipal User student, Model model) { //returns someone template for  U request
@@ -39,6 +47,16 @@ public class StudentController {
 
         model.addAttribute("lessons", lessonsWithStudent);
 
+        //Поиск преподов по специальности студента
+
+        List<User> usersFromDBwCurrentSpecialization = userService.findBySpecialization(student.getSpecialization());
+        //Если нет роли препода то убираем из листа
+        usersFromDBwCurrentSpecialization.removeIf(value -> !value.getRoles().contains(Role.TEACHER));
+        //мастерское (нет) избегание NPE
+        model.addAttribute("teacher", new ArrayList<>());
+        //Добавляем в модель учителей со специальностью студня
+        model.addAttribute("teachers", usersFromDBwCurrentSpecialization);
+
         return "student";
     }
 
@@ -49,30 +67,51 @@ public class StudentController {
         if (action.equals("delete")) {
             Lesson lessonFromDB = lessonRepository.getById(lessonId);
 
-            lessonRepository.delete(lessonFromDB);
-
-            lessonFromDB.removeUserByUsername(student.getUsername());
+            lessonFromDB.getUsers().remove(student);
 
             lessonRepository.save(lessonFromDB);
         }
         return "redirect:/student";
 //        return student(student, model);
     }
+
     @PostMapping("/student/add/{lessonId}")
     public String addStudentToLesson(@AuthenticationPrincipal User student, @PathVariable("lessonId") Long lessonId,
-                                          @RequestParam(required = true, defaultValue = "") String action,
-                                          Model model) {
+                                     @RequestParam(required = true, defaultValue = "") String action,
+                                     Model model) {
         if (action.equals("add")) {
             Lesson lessonFromDB = lessonRepository.getById(lessonId);
 
-            lessonRepository.delete(lessonFromDB);
 
-            lessonFromDB.addUser(student);
+            lessonFromDB.getUsers().add(student);
 
             lessonRepository.save(lessonFromDB);
         }
         return "redirect:/student";
 //        return student(student, model);
+    }
+
+    //TODO добавление в базу персонального урока.
+    @PostMapping("/student/addLesson")
+    public String addPersonalLesson(@AuthenticationPrincipal User student, @RequestParam String execution, @RequestParam String teacher, Model model) {
+
+        try {
+
+            LocalDateTime executionLDT = LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+            User teacherFromDB = userService.findUser(teacher);
+
+            Set<User> oneStudent = Collections.singleton(student);
+
+            Specialization specialization = student.getSpecialization();
+
+            Lesson lesson = new Lesson(executionLDT, specialization, teacherFromDB, oneStudent);
+
+            lessonRepository.save(lesson);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "redirect:/student";
     }
 
 

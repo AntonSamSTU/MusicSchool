@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-        <body>
-        <p th:text="'Hello, ' + ${about} + '!'"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+<p th:text="'Hello, ' + ${about} + '!'"/>
 
-        </body>
-    <footer>
+</body>
+<footer>
 
-        <a href="/login"> <input type="submit" value="Login"/> </a>
+    <form th:action="@{/main}" method="post">
+        <input type="submit" value="Personal account"/>
+    </form>
 
-        <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form></footer>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign out"/>
+    </form>
+</footer>
 </html>

@@ -7,11 +7,17 @@
 <body>
 
 Login page
+
 <form th:action="@{/login}" method="post">
     <div><label> User Name : <input type="text" name="username"/> </label></div>
     <div><label> Password: <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="Sign In"/></div>
 </form>
-<a href="/registration">Add new User</a>
+<a href="/registration"> <input type="submit" value="Registration"/></a>
 </body>
+
+
+<footer>
+    <a href="/"> <input type="submit" value="To Greeting"/> </a>
+</footer>
 </html>

@@ -70,10 +70,6 @@ public class TeacherController {
         }
 
         return teacher(model);
-//        Iterable<Lesson> lessons = lessonRepository.findAll();
-//        model.addAttribute("lessons", lessons);
-//
-//        return "teacher";
     }
 
     @PostMapping("/teacher/delete/{lessonId}")
