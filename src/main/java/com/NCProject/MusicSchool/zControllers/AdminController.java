@@ -4,6 +4,7 @@ import com.NCProject.MusicSchool.models.Lesson;
 import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
+import com.NCProject.MusicSchool.repo.UserRepository;
 import com.NCProject.MusicSchool.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,6 +30,9 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @GetMapping("/admin")
     public String admin(Model model) {
 
@@ -37,13 +41,26 @@ public class AdminController {
     }
 
     @PostMapping("/admin/delete/{userID}")
-    public String deleteUser(@AuthenticationPrincipal User admin, @PathVariable("userID") Long userID,
+    public String deleteUser(@AuthenticationPrincipal User admin, @PathVariable("userID") User userID, //спринг сразу обращается к репозирию и ищет юзера
                              @RequestParam(required = true, defaultValue = "") String action,
                              Model model) {
         if (action.equals("delete")) {
 
-            // boolean j = userService.deleteUser(userID);
-            //TODO query's
+            //нашли все уроки, в которых может быть пользователь по специализации.
+            List<Lesson> lessonFromDBBySpecialization = lessonRepository.findBySpecialization(userID.getSpecialization());
+
+            for (Lesson value :
+                    lessonFromDBBySpecialization) {
+                //удалили из студентов
+                value.getUsers().remove(userID);
+                //удалили из учителей
+                if (value.getTeacher().getUsername().equals(userID.getUsername())) {
+                    value.setTeacher(null);
+                }
+            }
+
+            lessonRepository.saveAll(lessonFromDBBySpecialization);
+            userRepository.delete(userID);
         }
 
         return "redirect:/admin";

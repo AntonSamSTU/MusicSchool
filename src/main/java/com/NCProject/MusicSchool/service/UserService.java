@@ -89,27 +89,10 @@ public class UserService implements UserDetailsService {
 //        return userRepository.findByUsername(user.getUsername()) == null;
 //    }
 
-    public boolean deleteUser(Long userID) {
-
-        User userFromDB = findUser(userID);
-        if (userFromDB == null || userFromDB.getRoles().contains(Role.ADMIN)) {
-            return false;
-        }
-
-        //  entityManager.createQuery("DELETE from users WHERE id = " +"'"+ userID +"'", User.class);
-
-        if(userFromDB.getRoles().contains(Role.TEACHER)){
-
-            lessonRepository.deleteAll(lessonRepository.findByTeacher(userFromDB));
-        }
-
-        //TODO удалить ссылки в таблице отношений для студента. КАК?
-        userRepository.deleteById(userID);
-
-        return !userRepository.existsById(userID);
-
-
-    }
+//    public boolean deleteUser(Long userID) {
+//
+//        return false;
+//    }
 //    public boolean deleteUser(String username) {
 //        User userFromBd = userRepository.findByUsername(username);
 //        if (userFromBd == null) {
@@ -118,6 +101,6 @@ public class UserService implements UserDetailsService {
 //            userRepository.delete(userFromBd);
 //            return true;
 //        }
-//    }
+//
 
 }
