@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>greeting</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <p th:text="'Hello, ' + ${about} + '!'"/>
 
 </body>
 <footer>
-
-    <a href="/login"> <input type="submit" value="Login"/> </a>
+    <p>Авторизация</p>
+    <a href="/login"> <input type="submit" value="Login" class="button"/> </a>
 
  </footer>
 </html>

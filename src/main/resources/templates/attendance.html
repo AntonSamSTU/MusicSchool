@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Attendance</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-
-<div>Students</div>
+<p>Назад в личный кабинет учителя</p>
+<a href="/teacher"> <input type="submit" value="Step Back" class="button"/> </a>
 
 <form th:action="@{/attendance/{lessonId}(lessonId=${lesson.id})}" method="post">
-    <table border="1">
-        <tr>
+    <table border="1" class="table">
+        <caption><h3>Students</h3></caption>
+        <tr class="thead">
             <th>username</th>
+            <th>Отметить студента</th>
         </tr>
-        <tr th:each="student : ${students}">
+        <tr th:each="student : ${students}" class="tbody">
 
             <td th:utext="${student.username}">id</td>
 
@@ -22,10 +25,11 @@
             </td>
 
     </table>
-    <button type="submit">Update</button>
+    <p>Подтвердить выбор</p>
+    <button type="submit" class="button">Update</button>
 </form>
 </body>
 <footer>
-    <a href="/teacher"> <input type="submit" value="Step Back"/> </a>
+
 </footer>
 </html>

@@ -37,18 +37,41 @@ public class StudentController {
         model.addAttribute("message", "Hello student " + student.getUsername());
 
         //ищем уроки, в у которых специализация юзера
+
         List<Lesson> lessonsFromDB = lessonRepository.findBySpecialization(student.getSpecialization());
 
+        //Создание и заполнение листа индивидуальных занятий
+        ArrayList<Lesson> lessonsFromDBIndividual = new ArrayList<>();
+
+        for (Lesson value :
+                lessonsFromDB) {
+            if (value.isIndividual()) {
+                //Добавили в лист индивидуальных занятий
+                lessonsFromDBIndividual.add(value);
+            }
+        }
+
+        //Оставили в списке индивидуальных только те, у которых соответсвующий студент
+        lessonsFromDBIndividual.removeIf(value -> ! value.getUsers().contains(student));
+
+        //удалили из листа общих занятий индивидуальные.
+        lessonsFromDB.removeIf(Lesson::isIndividual);
+
+        //отсортировали списки по времени
         lessonsFromDB.sort(Comparator.comparing(Lesson::getExecution));
 
-        List<Lesson> lessonsWithStudent = lessonsFromDB;
-        //если студента нет в уроке, то удаляем.
-        // lessonsWithStudent.removeIf(value -> !value.getUsers().contains(student));
+        lessonsFromDBIndividual.sort(Comparator.comparing(Lesson::getExecution));
 
-        model.addAttribute("lessons", lessonsWithStudent);
+
+
+        //Добавили в модель НЕ индивидуальные уроки
+        model.addAttribute("lessons", lessonsFromDB);
+
+        //Добавили в модель ИНДИВИДУАЛЬНЫЕ уроки
+        model.addAttribute("lessonsIndividual", lessonsFromDBIndividual);
+
 
         //Поиск преподов по специальности студента
-
         List<User> usersFromDBwCurrentSpecialization = userService.findBySpecialization(student.getSpecialization());
         //Если нет роли препода то убираем из листа
         usersFromDBwCurrentSpecialization.removeIf(value -> !value.getRoles().contains(Role.TEACHER));
@@ -70,6 +93,9 @@ public class StudentController {
             lessonFromDB.getUsers().remove(student);
 
             lessonRepository.save(lessonFromDB);
+        }
+        if(action.equals("deleteLesson")){
+            lessonRepository.deleteById(lessonId);
         }
         return "redirect:/student";
 //        return student(student, model);
@@ -105,7 +131,7 @@ public class StudentController {
 
             Specialization specialization = student.getSpecialization();
 
-            Lesson lesson = new Lesson(executionLDT, specialization, teacherFromDB, oneStudent);
+            Lesson lesson = new Lesson(executionLDT, specialization, teacherFromDB, oneStudent, true);
 
             lessonRepository.save(lesson);
         } catch (Exception e) {

@@ -11,6 +11,10 @@ import java.util.List;
 
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
     Lesson findByExecution(LocalDateTime execution);
-    Iterable<Lesson> findByTeacher(User teacher);
+
+    List<Lesson> findByTeacher(User teacher);
+
     List<Lesson> findBySpecialization(Specialization specialization);
+
+    List<Lesson> findByIndividual(boolean individual);
 }

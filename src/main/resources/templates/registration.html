@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
     <title>Регистрация</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <div th:if="${param.error}">
@@ -25,7 +27,7 @@ Add new user
         <option value="PIANO">PIANO</option>
         <option value="DRUMS">DRUMS</option>
     </select>
-    <div><input type="submit" value="Sign Up"/></div>
+    <div><input type="submit" value="Sign Up" class="button"/></div>
 </form>
 </body>
 </html>

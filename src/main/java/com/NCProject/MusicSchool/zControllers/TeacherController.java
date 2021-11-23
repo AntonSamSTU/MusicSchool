@@ -6,6 +6,7 @@ import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
 import com.NCProject.MusicSchool.repo.UserRepository;
 import com.NCProject.MusicSchool.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,8 @@ import java.util.*;
 @Controller
 public class TeacherController {
 
+    private static final Logger logger = Logger.getLogger(TeacherController.class);
+
     @Autowired
     private LessonRepository lessonRepository;
 
@@ -36,10 +39,34 @@ public class TeacherController {
     }
 
     @GetMapping("/teacher") //take user's request
-    public String teacher(Model model) { //returns someone template for  U request
+    public String teacher(Model model, @AuthenticationPrincipal User teacher) { //returns someone template for  U request
+
+        //Все общие уроки
         List<Lesson> lessons = lessonRepository.findAll();
+
+        lessons.removeIf(Lesson::isIndividual);
         lessons.sort(Comparator.comparing(Lesson::getExecution));
         model.addAttribute("lessons", lessons);
+        model.addAttribute("about", "Hello teacher " + teacher.getUsername());
+
+        //Групповые уроки учителя
+        List<Lesson> lessonsTeacherGroup = lessonRepository.findByTeacher(teacher);
+        //оставили только групповые учителя
+        lessonsTeacherGroup.removeIf(Lesson::isIndividual);
+        //отсортировали общие учителя
+        lessonsTeacherGroup.sort(Comparator.comparing(Lesson::getExecution));
+        //добавили в модель
+        model.addAttribute("lessonsGroup", lessonsTeacherGroup);
+
+        //Индивидуальные уроки учителя
+        List<Lesson> lessonsTeacherIndividual = lessonRepository.findByTeacher(teacher);
+        //оставили только индивидуальные учителя
+        lessonsTeacherIndividual.removeIf(value -> !value.isIndividual());
+        //отсортировали индивидуальные учителя
+        lessonsTeacherIndividual.sort(Comparator.comparing(Lesson::getExecution));
+        //добавили в модель
+        model.addAttribute("lessonsIndividual", lessonsTeacherIndividual);
+
 
         return "teacher";
     }
@@ -58,18 +85,21 @@ public class TeacherController {
 
         try {
             Lesson lesson = new Lesson(LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                    teacher.getSpecialization(), teacher);
+                    teacher.getSpecialization(), teacher, false);
 
             if (students.size() > 0) {
                 lesson.setUsers(students);
             }
 
             lessonRepository.save(lesson);
+
+            logger.info("Lesson with TIME '" + lesson.getExecution() + "' has created by TEACHER with USERNAME '" + teacher.getUsername()
+                    + "' and with ID ' " + teacher.getId() + "'");
         } catch (Exception e) {
-
+            logger.warn("EXCEPTION in Teacher Controller", e);
         }
-
-        return teacher(model);
+        return "redirect:/teacher";
+        // return teacher(model, teacher);
     }
 
     @PostMapping("/teacher/delete/{lessonId}")
@@ -77,10 +107,9 @@ public class TeacherController {
                                @RequestParam(required = true, defaultValue = "") String action,
                                Model model) {
         if (action.equals("delete")) {
-            // Lesson lessonFromDB = lessonRepository.findById(lessonId).get();
             Lesson lessonFromDB = findLesson(lessonId);
             if (lessonFromDB != null) {
-                if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
+                if (teacher.getId().equals(lessonFromDB.getTeacher().getId())) {
                     lessonRepository.deleteById(lessonId);
                 }
             }
@@ -96,7 +125,7 @@ public class TeacherController {
 
         Lesson lessonFromDB = lessonRepository.getById(lessonId);
         if (action.equals("update")) {
-            if (teacher.getUsername().equals(lessonFromDB.getTeacher().getUsername())) {
+            if (teacher.getId().equals(lessonFromDB.getTeacher().getId())) {
                 try {
                     LocalDateTime newExecution = LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
                     //         lessonRepository.deleteById(lessonId);
@@ -104,8 +133,10 @@ public class TeacherController {
 
                     //метод save() работает как update, если в БД есть поле, у которого такое же ID, как у объекта
                     lessonRepository.save(lessonFromDB);
+                    logger.info("Lesson with TIME '" + lessonFromDB.getExecution() + "' has changed by TEACHER with USERNAME '" + teacher.getUsername()
+                            + "' and with ID ' " + teacher.getId() + "' to NEW TIME '" + lessonFromDB.getExecution() + "'");
                 } catch (Exception e) {
-                    model.addAttribute("message", e.getMessage());
+                    logger.warn("EXCEPTION in Teacher Controller", e);
                 }
             }
         }

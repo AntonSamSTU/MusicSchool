@@ -20,6 +20,8 @@ public class Lesson {
     @Enumerated(EnumType.STRING)
     private Specialization specialization;
 
+    private boolean individual;
+
     @ManyToOne(fetch = FetchType.EAGER) //одному тичеру соответскует множество уроков
   //  @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @JoinColumn(name ="teacher_id")
@@ -40,17 +42,27 @@ public class Lesson {
     public Lesson() {
     }
 
-    public Lesson(LocalDateTime execution, Specialization specialization, User teacher) {
+    public Lesson(LocalDateTime execution, Specialization specialization, User teacher, boolean individual) {
         this.execution = execution;
         this.specialization = specialization;
         this.teacher = teacher;
+        this.individual = individual;
     }
 
-    public Lesson(LocalDateTime execution, Specialization specialization, User teacher, Set<User> users) {
+    public Lesson(LocalDateTime execution, Specialization specialization, User teacher, Set<User> users, boolean individual) {
         this.execution = execution;
         this.specialization = specialization;
         this.teacher = teacher;
         this.users = users;
+        this.individual = individual;
+    }
+
+    public boolean isIndividual() {
+        return individual;
+    }
+
+    public void setIndividual(boolean individual) {
+        this.individual = individual;
     }
 
     public User getTeacher() {

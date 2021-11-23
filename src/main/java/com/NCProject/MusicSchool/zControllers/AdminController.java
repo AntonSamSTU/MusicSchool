@@ -6,6 +6,7 @@ import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
 import com.NCProject.MusicSchool.repo.UserRepository;
 import com.NCProject.MusicSchool.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,14 +16,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Controller
 public class AdminController {
+
+    private static final Logger logger = Logger.getLogger(AdminController.class);
 
     @Autowired
     private LessonRepository lessonRepository;
@@ -34,9 +35,15 @@ public class AdminController {
     UserRepository userRepository;
 
     @GetMapping("/admin")
-    public String admin(Model model) {
+    public String admin(Model model, @AuthenticationPrincipal User admin) {
 
-        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("about", "Hello Admin " + admin.getUsername());
+
+        List<User> usersFromDB = userService.findAllUsers();
+
+        usersFromDB.sort(Comparator.comparing(User::getId));
+
+        model.addAttribute("users", usersFromDB);
         return "admin";
     }
 
@@ -54,13 +61,17 @@ public class AdminController {
                 //удалили из студентов
                 value.getUsers().remove(userID);
                 //удалили из учителей
-                if (value.getTeacher().getUsername().equals(userID.getUsername())) {
+                if (value.getTeacher().getId().equals(userID.getId())) {
                     value.setTeacher(null);
                 }
+//                if (value.getTeacher().getUsername().equals(userID.getUsername())) {
+//                    value.setTeacher(null);
+//                }
             }
 
             lessonRepository.saveAll(lessonFromDBBySpecialization);
             userRepository.delete(userID);
+            logger.info("USER with USERNAME '" + userID.getUsername() + "' and ID '" + userID.getId() + "' has deleted by ADMIN");
         }
 
         return "redirect:/admin";
@@ -81,6 +92,9 @@ public class AdminController {
             user.getRoles().add(Role.valueOf(roleString));
 
             userService.saveUser(user);
+
+            logger.info("USER with USERNAME '" + userID.getUsername() + "' and ID '" + userID.getId()
+                    + "' and ROLE's '" + userID.getRoles() + "' has changed by ADMIN to ROLE's : '" + user.getRoles() + "'");
 
             checkLessons();
 

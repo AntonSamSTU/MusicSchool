@@ -3,6 +3,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
@@ -11,13 +12,13 @@ Login page
 <form th:action="@{/login}" method="post">
     <div><label> User Name : <input type="text" name="username"/> </label></div>
     <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
+    <div><input type="submit" value="Sign In" class="button"/></div>
 </form>
-<a href="/registration"> <input type="submit" value="Registration"/></a>
+<a href="/registration"> <input type="submit" value="Registration" class="button"/></a>
 </body>
 
 
 <footer>
-    <a href="/"> <input type="submit" value="To Greeting"/> </a>
+    <a href="/"> <input type="submit" value="To Greeting" class="button"/> </a>
 </footer>
 </html>

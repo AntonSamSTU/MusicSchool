@@ -2,22 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+<a href="/main"> <input type="submit" value="To Main" class="button"/> </a>
 <form th:action="@{/admin}" method="get">
-    <!--   <p th:text="${message}"/> -->
+    <p th:text="${about}"></p>
 </form>
-<div>Users</div>
-<table border="1">
-    <tr>
+<table border="1" class="table">
+    <caption><h3>Users</h3></caption>
+    <tr class="thead">
         <th>id</th>
         <th>username</th>
         <th>roles</th>
         <th>specialization</th>
+        <th>delete user</th>
+        <th>update role</th>
+
 
     </tr>
-    <tr th:each="user : ${users}">
+    <tr th:each="user : ${users}" class="tbody">
 
         <!--      <td th:utext="${lesson.id}">id</td> -->
         <td th:utext="${user.id}">id</td>
@@ -27,7 +32,7 @@
         <td>
             <form th:action="@{/admin/delete/{userID}(userID=${user.id})}" method="post">
                 <input type="hidden" name="action" value="delete"/>
-                <button type="submit">Delete</button>
+                <button type="submit" class="button">Delete</button>
             </form>
         </td>
         <td>
@@ -39,7 +44,7 @@
                     <option value="ADMIN">ADMIN</option>
                 </select>
                 <input type="hidden" name="action" value="update"/>
-                <button type="submit">Update</button>
+                <button type="submit" class="button">Update</button>
             </form>
         </td>
 
@@ -48,6 +53,6 @@
 
 </body>
 <footer>
-    <a href="/main"> <input type="submit" value="To Main"/> </a>
+
 </footer>
 </html>

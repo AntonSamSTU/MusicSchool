@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Main</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <p th:text="'Hello, ' + ${about} + '!'"/>
@@ -11,11 +12,13 @@
 <footer>
 
     <form th:action="@{/main}" method="post">
-        <input type="submit" value="Personal account"/>
+        <p>Личный кабинет</p>
+        <input type="submit" value="Personal account" class="button"/>
     </form>
 
     <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign out"/>
+        <p>Выйти</p>
+        <input type="submit" value="Sign out" class="button"/>
     </form>
 </footer>
 </html>

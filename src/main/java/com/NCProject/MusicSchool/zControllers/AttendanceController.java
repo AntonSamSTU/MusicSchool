@@ -4,6 +4,7 @@ import com.NCProject.MusicSchool.models.Lesson;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
 import com.NCProject.MusicSchool.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,13 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
 
-//TODO система посещений
+
 @Controller
 public class AttendanceController {
 
+
+    private static final Logger logger = Logger.getLogger(AttendanceController.class);
     @Autowired
     LessonRepository lessonRepository;
 
@@ -43,14 +45,21 @@ public class AttendanceController {
 
     @PostMapping("attendance/{lessonId}") //take user's request
     public String teacherLessonAttendanceSave(@AuthenticationPrincipal User teacher, @PathVariable("lessonId") Lesson lessonId,
-                                              @RequestParam Long [] action,
+                                              @RequestParam Long[] action,
                                               Model model) { //returns someone template for  U request
+        ArrayList<Long> IDsforLogger = new ArrayList<>();
 
-        for (Long userID:
-             action) {
+        for (Long userID :
+                action) {
             User studentFromDB = userService.findUser(userID);
             studentFromDB.stagePlusPlus();
+            IDsforLogger.add(studentFromDB.getId());
             userService.saveUser(studentFromDB);
+        }
+
+        if (IDsforLogger.size() > 0) {
+            logger.info("In a LESSON with an ID '" + lessonId.getId() + "' , a Teacher with a USERNAME '" + teacher.getUsername()
+                    + "' marked students with an ID's: '" + IDsforLogger + "'");
         }
         return "redirect:/teacher";
     }
