@@ -37,8 +37,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/student/**").hasRole(String.valueOf(Role.STUDENT))
                     .antMatchers("/teacher/**").hasRole(String.valueOf(Role.TEACHER))
                     .antMatchers("/attendance/**").hasRole(String.valueOf(Role.TEACHER))
+                    .antMatchers("/chat/**").hasRole(String.valueOf(Role.USER))
                     .antMatchers("/").permitAll()//на главную страничку мы разрешаем волный доступ
-               //     .anyRequest().authenticated()
+
+                  //  .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .loginPage("/login")

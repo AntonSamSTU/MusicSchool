@@ -1,2 +1,72 @@
 2021-11-24 01:25 INFO  MusicSchoolApplication:16 - App started
 2021-11-24 01:25 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:29 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:29 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:30 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:30 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:31 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:31 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:32 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:32 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:34 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-24 20:35 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:36 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:36 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 20:38 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-24 21:44 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 21:44 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 21:45 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-24 21:47 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 21:47 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 21:50 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-24 21:50 INFO  AttendanceController:61 - In a LESSON with an ID '19' , a Teacher with a USERNAME 'teacherG1' marked students with an ID's: '[5, 4, 6]'
+2021-11-24 22:18 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 22:18 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:36 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:36 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:36 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-24 23:37 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-24 23:37 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-24 23:39 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:39 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:42 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:42 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:43 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:43 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:44 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-24 23:47 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-24 23:48 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:48 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:48 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:48 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:50 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:50 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:53 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:53 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:54 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:54 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:55 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:55 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:59 INFO  MusicSchoolApplication:16 - App started
+2021-11-24 23:59 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:00 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-25 00:02 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:02 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:05 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:05 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:11 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:11 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:18 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:18 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:18 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-25 00:19 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:19 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:19 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:20 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
+2021-11-25 00:21 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:21 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:28 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:28 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:29 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:29 INFO  MusicSchoolApplication:16 - App started
+2021-11-25 00:30 INFO  MainController:35 - TEACHER with username 'teacherG1' and with id '2' has successfully logged into App 
