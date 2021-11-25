@@ -8,6 +8,9 @@
 </head>
 
 <body>
+<form th:action="@{/chat}" method="get">
+    <input type="submit" value="Chat" class="button"/>
+</form>
 <form th:action="@{/teacher}" method="get">
     <p th:text="${about}"></p>
 </form>
@@ -99,6 +102,7 @@
                 <button type="submit" class="button">Update</button>
             </form>
         </td>
+    </tr>
 
 </table>
 

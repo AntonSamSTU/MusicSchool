@@ -10,22 +10,53 @@
     <meta charset="UTF-8">
     <title>Chat</title>
     <link rel="stylesheet" href="/css/style.css">
+
+
 </head>
 <body>
-<p th:text="${about}"></p>
-    <form th:action="@{/main}" method="post">
-        <p>Личный кабинет</p>
-        <input type="submit" value="Personal account" class="button"/>
-    </form>
+<form th:action="@{/chat}" method="get">
+    <p th:text="${about}"></p>
+</form>
+
+<form th:action="@{/main}" method="post">
+    <p>Личный кабинет</p>
+    <input type="submit" value="Personal account" class="button"/>
+</form>
 
 
+<div>
+    <table th:action="@{/chat}" method="get" class="table">
+        <caption>Сообщения для вас</caption>
+        <tr class="thead">
+            <th>sender</th>
+            <th>text</th>
+            <th>timestamps</th>
+            <th>file</th>
+        </tr>
+        <tr th:each="message : ${messagesToUser}" class="tbody">
 
-    <form id="newmsgform"  th:action="@{/chat}" method="post" enctype="multipart/form-data">
+            <td th:utext="${message.sender}">sender</td>
+            <td th:utext="${message.text}">text</td>
+            <td th:utext="${message.timestamps}">timestamps</td>
+            <!--   <td th:utext="${message.fileName}">filename</td>-->
+            <!--<td><img th:src="@{/uploads/{filename}(filename = ${message.fileName})}"></td>-->
+
+           <!-- <td> <a th:href="@{/uploads/{filename}(filename = ${message.fileName})}" download/>Скачать файл</td> -->
+            <th:block th:if="${message.fileName != 'null' }">
+                <td> <a th:href="@{|/chat/download?id=${message.id}|}">download file</a> </td>
+            </th:block>
+
+    </table>
+</div>
+
+
+<div>
+    <p>Отправить новое сообщение</p>
+    <form id="newmsgform" th:action="@{/chat}" method="post" enctype="multipart/form-data">
 
         <p><textarea rows="10" cols="45" name="text" required></textarea></p>
-
-        <select name="selectedusers" required multiple = "multiple">
-
+        <input type="file" name="file" class="button"/>
+        <select name="selectedusers" required multiple="multiple">
             <option th:each="user: ${users}"
                     th:value="${user.id}" th:text="${user}">
 
@@ -33,6 +64,8 @@
 
         <button class="button" type="submit" form="newmsgform">Отправить сообщение</button>
     </form>
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
@@ -40,7 +73,9 @@
       $(function () {
         $('select').multipleSelect()
       })
-    </script>
+
+
+</script>
 
 
 </body>

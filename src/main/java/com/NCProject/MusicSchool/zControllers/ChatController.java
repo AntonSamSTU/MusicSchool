@@ -1,25 +1,22 @@
 package com.NCProject.MusicSchool.zControllers;
 
 import com.NCProject.MusicSchool.models.Message;
-import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.MessageRepository;
 import com.NCProject.MusicSchool.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class ChatController {
@@ -78,18 +75,24 @@ public class ChatController {
             //Создали сообщение и указали время
             Message message = new Message();
 
+            Set<User> recipients = new HashSet<>();
 
             //Добавили всех получателей, кто в чекбоксе
             for (Long userID :
                     selectedusers) {
-                message.getRecipients().add(userService.findUser(userID));
+
+                User userFromDB = userService.findUser(userID);
+                recipients.add(userFromDB);
             }
 
+
+            message.setRecipients(recipients);
             //Добавили отправителя
             message.setSender(user);
 
             //Добавили текст сообщения
             message.setText(text);
+
 
             //Добавили файл
             if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
@@ -105,12 +108,26 @@ public class ChatController {
                 file.transferTo(new File(uploadPath + "/" + resultFileName));
                 //Засетали в сообщение
                 message.setFileName(resultFileName);
+            } else {
+                message.setFileName("null");
             }
-        } catch (Exception e) {
 
+            messageRepository.save(message);
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
         return "redirect:/chat";
+    }
+
+
+    @RequestMapping(value = "/chat/download", method = RequestMethod.GET)
+    @ResponseBody
+    public FileSystemResource downloadFile(@Param(value = "id") Long id) {
+        Message message = messageRepository.getById(id);
+        return new FileSystemResource(new File(uploadPath + "/"+ message.getFileName()));
     }
 
 

@@ -18,6 +18,7 @@ public class Message {
     private User sender;
 
     @ManyToMany( fetch = FetchType.EAGER)
+    @JoinTable(name = "messages_users")
     private Set<User> recipients;
 
     private String text;
