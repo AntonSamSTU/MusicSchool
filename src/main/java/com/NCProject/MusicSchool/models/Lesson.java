@@ -1,7 +1,5 @@
 package com.NCProject.MusicSchool.models;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -23,20 +21,11 @@ public class Lesson {
     private boolean individual;
 
     @ManyToOne(fetch = FetchType.EAGER) //одному тичеру соответскует множество уроков
-  //  @Cascade(org.hibernate.annotations.CascadeType.DELETE)
-    @JoinColumn(name ="teacher_id")
+    @JoinColumn(name = "teacher_id")
     User teacher;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    //@Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @JoinTable(name = "lessons_users")
-//            @JoinTable(
-//                    name = "lessons_users",
-//                    joinColumns = {@JoinColumn(name = "lesson_id")},
-//                    inverseJoinColumns  = {@JoinColumn(name = "student_id")}
-//
-//            )
-
     Set<User> users;
 
     public Lesson() {
@@ -103,17 +92,6 @@ public class Lesson {
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }
-
-
-
-    public boolean addUser(User user){
-        for (User value:
-             users) {
-            if(value.getUsername().equals(user.getUsername())) return false;
-        }
-        users.add(user);
-        return true;
     }
 
 }

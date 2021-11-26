@@ -1,6 +1,5 @@
 package com.NCProject.MusicSchool.service;
 
-import com.NCProject.MusicSchool.models.Lesson;
 import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.Specialization;
 import com.NCProject.MusicSchool.models.User;
@@ -13,8 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
@@ -23,9 +20,6 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Autowired
     UserRepository userRepository;
@@ -55,8 +49,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public List<User> findBySpecialization(Specialization specialization)
-    {
+    public List<User> findBySpecialization(Specialization specialization) {
         return userRepository.findBySpecialization(specialization);
     }
 
@@ -67,7 +60,7 @@ public class UserService implements UserDetailsService {
             user.setPassword(bCryptPasswordEncoder.encode(password));
             user.setName(name);
             user.setSurname(surname);
-            user.setRoles(Set.of(Role.USER, Role.STUDENT ));
+            user.setRoles(Set.of(Role.USER, Role.STUDENT));
             userRepository.save(user);
             return true;
         } else {
@@ -75,32 +68,9 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public boolean saveUser(User user){
+    public boolean saveUser(User user) {
         userRepository.save(user);
         return userRepository.existsById(user.getId());
     }
-
-    public void saveAllUsers(Iterable<User> users){
-        userRepository.saveAll(users);
-    }
-//
-//    public boolean deleteUser(User user) {
-//        userRepository.delete(user);
-//        return userRepository.findByUsername(user.getUsername()) == null;
-//    }
-
-//    public boolean deleteUser(Long userID) {
-//
-//        return false;
-//    }
-//    public boolean deleteUser(String username) {
-//        User userFromBd = userRepository.findByUsername(username);
-//        if (userFromBd == null) {
-//            return false;
-//        } else {
-//            userRepository.delete(userFromBd);
-//            return true;
-//        }
-//
 
 }

@@ -39,14 +39,10 @@ public class StudentController {
     public String student(@AuthenticationPrincipal User student, Model model) { //returns someone template for  U request
 
         model.addAttribute("message", "Hello student " + student.getUsername());
-
         //ищем уроки, в у которых специализация юзера
-
         List<Lesson> lessonsFromDB = lessonRepository.findBySpecialization(student.getSpecialization());
-
         //Создание и заполнение листа индивидуальных занятий
         ArrayList<Lesson> lessonsFromDBIndividual = new ArrayList<>();
-
         for (Lesson value :
                 lessonsFromDB) {
             if (value.isIndividual()) {
@@ -54,25 +50,17 @@ public class StudentController {
                 lessonsFromDBIndividual.add(value);
             }
         }
-
         //Оставили в списке индивидуальных только те, у которых соответсвующий студент
         lessonsFromDBIndividual.removeIf(value -> !value.getUsers().contains(student));
-
         //удалили из листа общих занятий индивидуальные.
         lessonsFromDB.removeIf(Lesson::isIndividual);
-
         //отсортировали списки по времени
         lessonsFromDB.sort(Comparator.comparing(Lesson::getExecution));
-
         lessonsFromDBIndividual.sort(Comparator.comparing(Lesson::getExecution));
-
-
         //Добавили в модель НЕ индивидуальные уроки
         model.addAttribute("lessons", lessonsFromDB);
-
         //Добавили в модель ИНДИВИДУАЛЬНЫЕ уроки
         model.addAttribute("lessonsIndividual", lessonsFromDBIndividual);
-
 
         //Поиск преподов по специальности студента
         List<User> usersFromDBwCurrentSpecialization = userService.findBySpecialization(student.getSpecialization());
@@ -115,7 +103,6 @@ public class StudentController {
             messageRepository.save(notificationToTeacher);
         }
         return "redirect:/student";
-//        return student(student, model);
     }
 
     @PostMapping("/student/add/{lessonId}")
@@ -138,7 +125,6 @@ public class StudentController {
             lessonRepository.save(lessonFromDB);
         }
         return "redirect:/student";
-//        return student(student, model);
     }
 
     @PostMapping("/student/addLesson")

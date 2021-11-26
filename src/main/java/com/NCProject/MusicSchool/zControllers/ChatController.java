@@ -49,18 +49,13 @@ public class ChatController {
 
 
         List<Message> messagesToUser = messageRepository.findAll();
-
         //Если нотификация, то удалили из листа
         messagesToUser.removeIf(Message::isNotification);
-
         List<User> allUsers = userService.findAllUsers();
-
         //удалили из всех того, кто хочет отправить сообщение
         allUsers.remove(user);
-
         //Оставили в сообщениях для пользователя только соответсвующие
         messagesToUser.removeIf(value -> !value.getRecipients().contains(user));
-
         //Сообщения, которые отправил пользователь
         List<Message> messagesFromUser = messageRepository.findBySender(user);
         //Если нотификация, то удалили из листа
@@ -90,25 +85,19 @@ public class ChatController {
                 throw new NullPointerException("empty text of message");
             }
             Set<User> recipients = new HashSet<>();
-
             //Добавили всех получателей, кто в чекбоксе
             for (Long userID :
                     selectedusers) {
                 User userFromDB = userService.findUser(userID);
                 recipients.add(userFromDB);
             }
-
             //Создали сообщение и указали время
             Message message = new Message();
-
             message.setRecipients(recipients);
             //Добавили отправителя
             message.setSender(user);
-
             //Добавили текст сообщения
             message.setText(text);
-
-
             //Добавили файл
             //Проверка файла
             if (file != null && checkFile(file)) {
@@ -190,7 +179,6 @@ public class ChatController {
     private boolean checkFile(MultipartFile file) {
 
         boolean result = true;
-
         //Если пустое название файла
         if (file.getOriginalFilename().isEmpty()) {
             result = false;
@@ -199,13 +187,10 @@ public class ChatController {
         if (file.getSize() * CONVERT_TO_MBS > MAX_FILE_SIZE) {
             result = false;
         }
-
         //Если не разрешенный формат
-
         String[] splitedFileName = file.getOriginalFilename().split("\\.");
-
         String fileFormat = splitedFileName[splitedFileName.length - 1];
-        if ( !ALLOWED_FORMATS.contains(fileFormat)) {
+        if (!ALLOWED_FORMATS.contains(fileFormat)) {
             result = false;
         }
 

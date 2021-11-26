@@ -127,8 +127,6 @@ public class TeacherController {
             Lesson lessonFromDB = findLesson(lessonId);
             if (lessonFromDB != null) {
                 if (teacher.getId().equals(lessonFromDB.getTeacher().getId())) {
-
-
                     lessonRepository.deleteById(lessonId);
                     logger.info("Lesson with TIME '" + lessonFromDB.getExecution() + "' has deleted by TEACHER with USERNAME '" + teacher.getUsername()
                             + "' and with ID ' " + teacher.getId() + "'");
@@ -169,7 +167,6 @@ public class TeacherController {
                     lessonFromDB.setExecution(newExecution);
 
                     //метод save() работает как update, если в БД есть поле, у которого такое же ID, как у объекта
-
                     lessonRepository.save(lessonFromDB);
                     //Нотификация для студентов, у которых урок поменял время.
 
@@ -201,7 +198,6 @@ public class TeacherController {
             }
         }
         return "redirect:/teacher";
-        //    return teacher(model);
     }
 
 

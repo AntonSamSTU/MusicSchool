@@ -15,8 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//    @Autowired
-//    private DataSource dataSource;
 
 
     @Autowired
@@ -30,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                    .authorizeRequests()
+                .authorizeRequests()
                     .antMatchers("/registration/**").not().fullyAuthenticated()
                     .antMatchers("/main/**").authenticated()
                     .antMatchers("/admin/**").hasRole(String.valueOf(Role.ADMIN))
@@ -40,8 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/chat/**").hasRole(String.valueOf(Role.USER))
                     .antMatchers("/uploads/**").hasRole(String.valueOf(Role.USER))
                     .antMatchers("/").permitAll()//на главную страничку мы разрешаем волный доступ
-
-                  //  .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .loginPage("/login")
@@ -52,17 +48,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll();
 
     }
+
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication()
-//                .dataSource(dataSource)
-//                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-//                .usersByUsernameQuery("select*   from users where username=?")
-//                .authoritiesByUsernameQuery("select u.username, ur.roles from users u inner join user_role ur on u.id = ur.user_id where u.username=?");
-//    }
 }

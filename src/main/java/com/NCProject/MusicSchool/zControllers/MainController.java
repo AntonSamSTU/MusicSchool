@@ -1,6 +1,5 @@
 package com.NCProject.MusicSchool.zControllers;
 
-import com.NCProject.MusicSchool.MusicSchoolApplication;
 import com.NCProject.MusicSchool.models.Message;
 import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.User;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.File;
 import java.util.List;
 
 @Controller
@@ -76,25 +74,14 @@ public class MainController {
         return null;
     }
 
-    public void checkMessages(){
+    public void checkMessages() {
         List<Message> messagesFromDB = messageRepository.findAll();
-        for (Message value:
-             messagesFromDB) {
-            if(value.getRecipients().size() == 0){
+        for (Message value :
+                messagesFromDB) {
+            if (value.getRecipients().size() == 0) {
                 messageRepository.delete(value);
             }
         }
     }
-
-
-//    public static void main(String[] args) {
-//        MainController mainController = new MainController();
-//        Iterable<Lesson> lessons = mainController.lessonRepository.findAll();
-//
-//        for (Lesson value : lessons) {
-//            System.out.println(value.getExecution());
-//            System.out.println(value.getSpecialization());
-//        }
-//    }
 
 }

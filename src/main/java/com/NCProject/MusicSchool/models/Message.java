@@ -14,7 +14,6 @@ public class Message {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER) //одному отправителю соответскует множество сообщений
-    //  @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @JoinColumn(name = "sender_id")
     private User sender;
 
