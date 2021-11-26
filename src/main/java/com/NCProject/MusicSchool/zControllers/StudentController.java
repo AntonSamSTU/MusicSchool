@@ -141,7 +141,6 @@ public class StudentController {
 //        return student(student, model);
     }
 
-    //TODO добавление в базу персонального урока.
     @PostMapping("/student/addLesson")
     public String addPersonalLesson(@AuthenticationPrincipal User student, @RequestParam String execution, @RequestParam String teacher, Model model) {
 
