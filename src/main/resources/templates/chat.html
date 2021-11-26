@@ -26,15 +26,20 @@
 
 <div>
     <table th:action="@{/chat}" method="get" class="table">
-        <caption>Сообщения для вас</caption>
+        <caption>Сообщения ДЛЯ вас</caption>
         <tr class="thead">
+            <th>message read, delete</th>
             <th>sender</th>
             <th>text</th>
             <th>timestamps</th>
             <th>file</th>
         </tr>
         <tr th:each="message : ${messagesToUser}" class="tbody">
-
+            <td>
+                <form th:action="@{/chat/delete/{messageID}(messageID=${message.id})}" method="post">
+                    <input type="hidden" name="action" value="delete"/>
+                    <button type="submit" class="button">Delete</button>
+                </form></td>
             <td th:utext="${message.sender}">sender</td>
             <td th:utext="${message.text}">text</td>
             <td th:utext="${message.timestamps}">timestamps</td>
@@ -43,10 +48,32 @@
 
            <!-- <td> <a th:href="@{/uploads/{filename}(filename = ${message.fileName})}" download/>Скачать файл</td> -->
             <th:block th:if="${message.fileName != 'null' }">
-                <td> <a th:href="@{|/chat/download?id=${message.id}|}">download file</a> </td>
+                <td> <a th:href="@{|/chat/download?fileName=${message.fileName}|}">download file</a> </td>
             </th:block>
-
     </table>
+
+
+
+    <table th:action="@{/chat}" method="get" class="table">
+        <caption>Сообщения ОТ вас </caption>
+        <tr class="thead">
+            <th>recipients</th>
+            <th>sender</th>
+            <th>text</th>
+            <th>timestamps</th>
+            <th>file</th>
+        </tr>
+        <tr th:each="message : ${messagesFromUser}" class="tbody">
+            <td th:utext="${message.recipients}">recipients</td>
+            <td th:utext="${message.sender}">sender</td>
+            <td th:utext="${message.text}">text</td>
+            <td th:utext="${message.timestamps}">timestamps</td>
+
+            <th:block th:if="${message.fileName != 'null' }">
+                <td> <a th:href="@{|/chat/download?fileName=${message.fileName}|}">download file</a> </td>
+            </th:block>
+    </table>
+
 </div>
 
 

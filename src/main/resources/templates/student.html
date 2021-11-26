@@ -9,6 +9,9 @@
 </head>
 <body>
   <a href="/main"> <input type="submit" value="To Main" class="button" /> </a>
+  <form th:action="@{/chat}" method="get">
+      <input type="submit" value="Chat" class="button"/>
+  </form>
 <form th:action="@{/student}" method="get">
     <p th:text="${message}"/>
 </form>

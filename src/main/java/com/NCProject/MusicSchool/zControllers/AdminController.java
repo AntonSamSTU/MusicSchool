@@ -1,9 +1,11 @@
 package com.NCProject.MusicSchool.zControllers;
 
 import com.NCProject.MusicSchool.models.Lesson;
+import com.NCProject.MusicSchool.models.Message;
 import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
+import com.NCProject.MusicSchool.repo.MessageRepository;
 import com.NCProject.MusicSchool.repo.UserRepository;
 import com.NCProject.MusicSchool.service.UserService;
 import org.apache.log4j.Logger;
@@ -24,6 +26,9 @@ import java.util.List;
 public class AdminController {
 
     private static final Logger logger = Logger.getLogger(AdminController.class);
+
+    @Autowired
+    MessageRepository messageRepository;
 
     @Autowired
     private LessonRepository lessonRepository;
@@ -53,7 +58,7 @@ public class AdminController {
                              Model model) {
         if (action.equals("delete")) {
 
-            //нашли все уроки, в которых может быть пользователь по специализации.
+            //нашли все уроки, в которых может быть пользователь по специализации и почистили ссылки.
             List<Lesson> lessonFromDBBySpecialization = lessonRepository.findBySpecialization(userID.getSpecialization());
 
             for (Lesson value :
@@ -64,12 +69,20 @@ public class AdminController {
                 if (value.getTeacher().getId().equals(userID.getId())) {
                     value.setTeacher(null);
                 }
-//                if (value.getTeacher().getUsername().equals(userID.getUsername())) {
-//                    value.setTeacher(null);
-//                }
             }
-
             lessonRepository.saveAll(lessonFromDBBySpecialization);
+
+            //Нашли все мессенджи, где может быть удаляемый и почистили ссылки
+            List<Message> messagesFromDB = messageRepository.findAll();
+            for (Message value :
+                    messagesFromDB) {
+                value.getRecipients().remove(userID);
+                if (value.getSender().getId().equals(userID.getId())) {
+                    value.setSender(null);
+                }
+            }
+            messageRepository.saveAll(messagesFromDB);
+
             userRepository.delete(userID);
             logger.info("USER with USERNAME '" + userID.getUsername() + "' and ID '" + userID.getId() + "' has deleted by ADMIN");
         }

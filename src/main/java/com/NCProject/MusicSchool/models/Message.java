@@ -2,6 +2,7 @@ package com.NCProject.MusicSchool.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 @Entity
@@ -17,7 +18,7 @@ public class Message {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @ManyToMany( fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "messages_users")
     private Set<User> recipients;
 
@@ -27,18 +28,31 @@ public class Message {
 
     private String fileName;
 
+    private boolean notification;
+
 
     public Message() {
-        this.timestamps = LocalDateTime.now();
+        this.timestamps = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        notification = false;
     }
 
-    public Message(Long id, User sender, Set<User> recipients, String text,  String fileName) {
+    public Message(Long id, User sender, Set<User> recipients, String text, String fileName) {
         this.id = id;
         this.sender = sender;
         this.recipients = recipients;
         this.text = text;
         this.timestamps = LocalDateTime.now();
         this.fileName = fileName;
+    }
+
+    //Конструктор для уведомления
+    public Message(User sender, Set<User> recipients, String text) {
+        this.sender = sender;
+        this.recipients = recipients;
+        this.text = text;
+        this.timestamps = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        this.fileName = "null";
+        notification = true;
     }
 
     public Long getId() {
@@ -87,5 +101,13 @@ public class Message {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public boolean isNotification() {
+        return notification;
+    }
+
+    public void setNotification(boolean notification) {
+        this.notification = notification;
     }
 }

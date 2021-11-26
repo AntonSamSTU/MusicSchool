@@ -1,9 +1,11 @@
 package com.NCProject.MusicSchool.zControllers;
 
 import com.NCProject.MusicSchool.models.Lesson;
+import com.NCProject.MusicSchool.models.Message;
 import com.NCProject.MusicSchool.models.Role;
 import com.NCProject.MusicSchool.models.User;
 import com.NCProject.MusicSchool.repo.LessonRepository;
+import com.NCProject.MusicSchool.repo.MessageRepository;
 import com.NCProject.MusicSchool.repo.UserRepository;
 import com.NCProject.MusicSchool.service.UserService;
 import org.apache.log4j.Logger;
@@ -24,6 +26,9 @@ import java.util.*;
 public class TeacherController {
 
     private static final Logger logger = Logger.getLogger(TeacherController.class);
+
+    @Autowired
+    MessageRepository messageRepository;
 
     @Autowired
     private LessonRepository lessonRepository;
@@ -71,6 +76,7 @@ public class TeacherController {
         return "teacher";
     }
 
+    //Добавить урок
     @PostMapping("/teacher")
     public String addLesson(@AuthenticationPrincipal User teacher, @RequestParam String execution, Model model) {
         //ищем всех юзеров в БД, у которых такая же специальность, как у учителя
@@ -89,6 +95,17 @@ public class TeacherController {
 
             if (students.size() > 0) {
                 lesson.setUsers(students);
+
+                //Добавили нотификацию для студента, кто записался в урок.
+                for (User value :
+                        lesson.getUsers()) {
+                    Message notificationToStudents = new Message(teacher, Set.of(value), "Вы добавлены в урок к учителю " + teacher.getUsername()
+                            + " По специальности " + lesson.getSpecialization() + " На время : " + lesson.getExecution());
+
+                    messageRepository.save(notificationToStudents);
+                }
+
+
             }
 
             lessonRepository.save(lesson);
@@ -110,7 +127,24 @@ public class TeacherController {
             Lesson lessonFromDB = findLesson(lessonId);
             if (lessonFromDB != null) {
                 if (teacher.getId().equals(lessonFromDB.getTeacher().getId())) {
+
+
                     lessonRepository.deleteById(lessonId);
+                    logger.info("Lesson with TIME '" + lessonFromDB.getExecution() + "' has deleted by TEACHER with USERNAME '" + teacher.getUsername()
+                            + "' and with ID ' " + teacher.getId() + "'");
+                    //Нотификация для студентов, у которых урок удалился.
+                    if (lessonFromDB.getUsers().size() > 0) {
+
+                        for (User value :
+                                lessonFromDB.getUsers()) {
+                            Message notificationToStudents = new Message(teacher, Set.of(value), "Урок учителя " + teacher.getUsername()
+                                    + " По специальности " + lessonFromDB.getSpecialization()
+                                    + " На время : " + lessonFromDB.getExecution() + " Был удален.");
+
+                            messageRepository.save(notificationToStudents);
+                        }
+
+                    }
                 }
             }
         }
@@ -124,15 +158,41 @@ public class TeacherController {
                                Model model, @RequestParam String execution) {
 
         Lesson lessonFromDB = lessonRepository.getById(lessonId);
+
         if (action.equals("update")) {
             if (teacher.getId().equals(lessonFromDB.getTeacher().getId())) {
                 try {
                     LocalDateTime newExecution = LocalDateTime.parse(execution, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-                    //         lessonRepository.deleteById(lessonId);
+
+                    LocalDateTime oldExecution = lessonFromDB.getExecution();
+
                     lessonFromDB.setExecution(newExecution);
 
                     //метод save() работает как update, если в БД есть поле, у которого такое же ID, как у объекта
+
                     lessonRepository.save(lessonFromDB);
+                    //Нотификация для студентов, у которых урок поменял время.
+
+                    for (User value :
+                            lessonFromDB.getUsers()) {
+
+                        Message notificationToStudents = new Message();
+
+                        notificationToStudents.setSender(teacher);
+
+                        notificationToStudents.setRecipients(Set.of(value));
+
+                        notificationToStudents.setText("Урок учителя " + teacher.getUsername()
+                                + " По специальности " + lessonFromDB.getSpecialization()
+                                + " На время : " + oldExecution + " Перенесен на новое время " + newExecution);
+
+                        notificationToStudents.setNotification(true);
+
+                        notificationToStudents.setFileName("null");
+
+                        messageRepository.save(notificationToStudents);
+                    }
+
                     logger.info("Lesson with TIME '" + lessonFromDB.getExecution() + "' has changed by TEACHER with USERNAME '" + teacher.getUsername()
                             + "' and with ID ' " + teacher.getId() + "' to NEW TIME '" + lessonFromDB.getExecution() + "'");
                 } catch (Exception e) {

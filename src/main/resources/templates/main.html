@@ -15,10 +15,34 @@
         <p>Личный кабинет</p>
         <input type="submit" value="Personal account" class="button"/>
     </form>
+    <form th:action="@{/chat}" method="get">
+        <p>Чат</p>
+        <input type="submit" value="Chat" class="button"/>
+    </form>
 
     <form th:action="@{/logout}" method="post">
         <p>Выйти</p>
         <input type="submit" value="Sign out" class="button"/>
     </form>
+
+    <div><table th:action="@{/main}" method="get" class="table">
+        <caption>Уведомления!</caption>
+        <tr class="thead">
+            <th>sender</th>
+            <th>text</th>
+            <th>timestamps</th>
+            <th>notification read, delete</th>
+        </tr>
+        <tr th:each="message : ${notifications}" class="tbody">
+
+            <td th:utext="${message.sender}">sender</td>
+            <td th:utext="${message.text}">text</td>
+            <td th:utext="${message.timestamps}">timestamps</td>
+            <td>
+                <form th:action="@{/main/delete/{messageID}(messageID=${message.id})}" method="post">
+                    <input type="hidden" name="action" value="delete"/>
+                    <button type="submit" class="button">Delete</button>
+                </form></td>
+    </table></div>
 </footer>
 </html>

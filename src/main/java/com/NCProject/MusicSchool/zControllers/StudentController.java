@@ -1,11 +1,10 @@
 package com.NCProject.MusicSchool.zControllers;
 
-import com.NCProject.MusicSchool.models.Lesson;
-import com.NCProject.MusicSchool.models.Role;
-import com.NCProject.MusicSchool.models.Specialization;
-import com.NCProject.MusicSchool.models.User;
+import com.NCProject.MusicSchool.models.*;
 import com.NCProject.MusicSchool.repo.LessonRepository;
+import com.NCProject.MusicSchool.repo.MessageRepository;
 import com.NCProject.MusicSchool.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,6 +24,11 @@ import java.util.Collections;
 
 @Controller
 public class StudentController {
+
+    private static final Logger logger = Logger.getLogger(StudentController.class);
+
+    @Autowired
+    MessageRepository messageRepository;
 
     @Autowired
     LessonRepository lessonRepository;
@@ -52,7 +56,7 @@ public class StudentController {
         }
 
         //Оставили в списке индивидуальных только те, у которых соответсвующий студент
-        lessonsFromDBIndividual.removeIf(value -> ! value.getUsers().contains(student));
+        lessonsFromDBIndividual.removeIf(value -> !value.getUsers().contains(student));
 
         //удалили из листа общих занятий индивидуальные.
         lessonsFromDB.removeIf(Lesson::isIndividual);
@@ -61,7 +65,6 @@ public class StudentController {
         lessonsFromDB.sort(Comparator.comparing(Lesson::getExecution));
 
         lessonsFromDBIndividual.sort(Comparator.comparing(Lesson::getExecution));
-
 
 
         //Добавили в модель НЕ индивидуальные уроки
@@ -87,15 +90,29 @@ public class StudentController {
     public String deleteStudentFromLesson(@AuthenticationPrincipal User student, @PathVariable("lessonId") Long lessonId,
                                           @RequestParam(required = true, defaultValue = "") String action,
                                           Model model) {
+        Lesson lessonFromDB = lessonRepository.getById(lessonId);
         if (action.equals("delete")) {
-            Lesson lessonFromDB = lessonRepository.getById(lessonId);
 
             lessonFromDB.getUsers().remove(student);
 
+            //Нотификация для учителя, у которого студень удалился с урока.
+            Message notificationToTeacher = new Message(student, Set.of(lessonFromDB.getTeacher()), "из Вашего  урока на время " + lessonFromDB.getExecution()
+                    + " Удалился студент " + student);
+
+            messageRepository.save(notificationToTeacher);
+
             lessonRepository.save(lessonFromDB);
         }
-        if(action.equals("deleteLesson")){
+        if (action.equals("deleteLesson")) {
             lessonRepository.deleteById(lessonId);
+            logger.info("Personal Lesson with TIME '" + lessonFromDB.getExecution() + "' has deleted by STUDENT with USERNAME '" + student.getUsername()
+                    + "' and with ID ' " + student.getId() + "'");
+
+            //Нотификация для учителя, у которого студень удалил персональный урок.
+            Message notificationToTeacher = new Message(student, Set.of(lessonFromDB.getTeacher()), "Персональный урок на время " + lessonFromDB.getExecution()
+                    + " Удалил студент " + student);
+
+            messageRepository.save(notificationToTeacher);
         }
         return "redirect:/student";
 //        return student(student, model);
@@ -108,8 +125,15 @@ public class StudentController {
         if (action.equals("add")) {
             Lesson lessonFromDB = lessonRepository.getById(lessonId);
 
-
             lessonFromDB.getUsers().add(student);
+
+            //Нотификация для учителя, у которого добавился в урок студень.
+
+            Message notificationToTeacher = new Message(student, Set.of(lessonFromDB.getTeacher()), "В Ваш урок на время " + lessonFromDB.getExecution()
+                    + " Записался студент " + student);
+
+            messageRepository.save(notificationToTeacher);
+
 
             lessonRepository.save(lessonFromDB);
         }
@@ -133,9 +157,18 @@ public class StudentController {
 
             Lesson lesson = new Lesson(executionLDT, specialization, teacherFromDB, oneStudent, true);
 
+            //Нотификация для учителя, у которого появился персональный урок.
+            Message notificationToTeacher = new Message(student, Set.of(teacherFromDB), "У вас новый персональный урок на время " + executionLDT
+                    + " Со студентом " + student);
+
+            messageRepository.save(notificationToTeacher);
+
             lessonRepository.save(lesson);
+
+            logger.info("Personal Lesson with TIME '" + lesson.getExecution() + "' has created by STUDENT with USERNAME '" + student.getUsername()
+                    + "' and with ID ' " + student.getId() + "'");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warn("EXCEPTION in Teacher Controller", e);
         }
         return "redirect:/student";
     }
