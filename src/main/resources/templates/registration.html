@@ -1,33 +1,60 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
-<head>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="https://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+  <head>
     <title>Регистрация</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-Add new user
-<form th:action="@{/registration}" method="post">
-    <div><label> Login : <input type="text" name="username" required/> </label></div>
-    <div><label> Password: <input type="password" name="password" required/> </label></div>
-    <div><label> Name: <input type="text" name="name" required/> </label></div>
-    <div><label> Surname: <input type="text" name="surname" required/> </label></div>
-    <select type="text" name="specialization" required>
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <p>Registration Page</p>
+    </header>
+
+    <form th:action="@{/registration}" method="post" class="autorize">
+      <h4>Регистрация</h4>
+      <div>
+        <label class="label_autorize">Login: </label>
+        <input class="input_autorize" type="text" name="username" required />
+      </div>
+      <div>
+        <label class="label_autorize">Password: </label>
+        <input
+          class="input_autorize"
+          type="password"
+          name="password"
+          required
+        />
+      </div>
+      <div>
+        <label class="label_autorize">Name: </label>
+        <input class="input_autorize" type="text" name="name" required />
+      </div>
+      <div>
+        <label class="label_autorize"> Surname: </label>
+        <input class="input_autorize" type="text" name="surname" required />
+      </div>
+      <select
+        type="text"
+        name="specialization"
+        required
+        style="display: inline-block"
+      >
         <option value="">Выбрать</option>
         <option value="VOCAL">VOCAL</option>
         <option value="SOLFEGE">SOLFEGE</option>
         <option value="GUITAR">GUITAR</option>
         <option value="PIANO">PIANO</option>
         <option value="DRUMS">DRUMS</option>
-    </select>
-    <div><input type="submit" value="Sign Up" class="button"/></div>
-</form>
-</body>
+      </select>
+      <div style="padding: 10px; display: inline-block">
+        <input type="submit" value="Sign Up" class="button" />
+      </div>
+    </form>
+
+    <div th:if="${param.error}">Invalid username and password.</div>
+    <div th:if="${param.logout}">You have been logged out.</div>
+  </body>
 </html>
