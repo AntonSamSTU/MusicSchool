@@ -2133,3 +2133,50 @@ Caused by: org.hibernate.HibernateException: Found shared references to a collec
 2021-11-27 00:33 INFO  AdminController:109 - USER with USERNAME 'studentG3' and ID '6' and ROLE's '[USER, TEACHER]' has changed by ADMIN to ROLE's : '[USER, TEACHER]'
 2021-11-27 00:33 INFO  AdminController:87 - USER with USERNAME 'studentG3' and ID '6' has deleted by ADMIN
 2021-11-27 00:34 INFO  RegistrationController:33 - USER with username 'studentG3' has successfully  registered
+2022-01-13 00:10 INFO  MusicSchoolApplication:16 - App started
+2022-01-13 00:10 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:28 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:28 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:29 INFO  RegistrationController:33 - USER with username 'studentG1' has successfully  registered
+2022-01-23 16:29 INFO  MainController:61 - STUDENT with username 'studentG1' and with id '1' has successfully logged into App 
+2022-01-23 16:29 INFO  MainController:61 - STUDENT with username 'studentG1' and with id '1' has successfully logged into App 
+2022-01-23 16:36 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:36 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:36 INFO  RegistrationController:33 - USER with username 'admin' has successfully  registered
+2022-01-23 16:37 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:37 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:37 INFO  RegistrationController:33 - USER with username 'studentG2' has successfully  registered
+2022-01-23 16:38 INFO  RegistrationController:33 - USER with username 'studentG3' has successfully  registered
+2022-01-23 16:51 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:52 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:52 INFO  RegistrationController:33 - USER with username 'teacherG1' has successfully  registered
+2022-01-23 16:52 INFO  RegistrationController:33 - USER with username 'teacherG2' has successfully  registered
+2022-01-23 16:52 INFO  RegistrationController:33 - USER with username 'teacherG3' has successfully  registered
+2022-01-23 16:53 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:53 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:53 INFO  MainController:71 - ADMIN with username 'admin' and with id '2' has successfully logged into App 
+2022-01-23 16:54 INFO  MainController:71 - ADMIN with username 'admin' and with id '2' has successfully logged into App 
+2022-01-23 16:55 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:55 INFO  MusicSchoolApplication:16 - App started
+2022-01-23 16:55 INFO  MainController:71 - ADMIN with username 'admin' and with id '2' has successfully logged into App 
+2022-01-23 16:56 INFO  ChatController:114 - User with username admin uploaded the file to the server with filename 7af35278-9f61-4a85-a5cd-4d8bd0b7cf6f.test img new year.jpg
+2022-01-23 16:56 INFO  MainController:71 - ADMIN with username 'admin' and with id '2' has successfully logged into App 
+2022-01-23 16:57 INFO  MainController:66 - TEACHER with username 'teacherG1' and with id '5' has successfully logged into App 
+2022-01-23 16:57 INFO  TeacherController:113 - Lesson with TIME '2022-03-03T12:30' has created by TEACHER with USERNAME 'teacherG1' and with ID ' 5'
+2022-01-23 16:58 INFO  MainController:61 - STUDENT with username 'studentG1' and with id '1' has successfully logged into App 
+2022-01-24 12:12 INFO  MusicSchoolApplication:16 - App started
+2022-01-24 12:12 INFO  MusicSchoolApplication:16 - App started
+2022-01-24 12:13 INFO  MainController:71 - ADMIN with username 'admin' and with id '2' has successfully logged into App 
+2022-01-24 12:15 INFO  MainController:71 - ADMIN with username 'admin' and with id '2' has successfully logged into App 
+2022-01-24 12:15 INFO  MainController:71 - ADMIN with username 'admin' and with id '2' has successfully logged into App 
+2022-01-24 12:16 INFO  MainController:66 - TEACHER with username 'teacherG1' and with id '5' has successfully logged into App 
+2022-01-24 12:19 INFO  TeacherController:113 - Lesson with TIME '2040-03-03T12:30' has created by TEACHER with USERNAME 'teacherG1' and with ID ' 5'
+2022-01-24 12:20 INFO  AttendanceController:61 - In a LESSON with an ID '19' , a Teacher with a USERNAME 'teacherG1' marked students with an ID's: '[1, 3]'
+2022-01-24 12:21 INFO  MainController:61 - STUDENT with username 'studentG1' and with id '1' has successfully logged into App 
+2022-01-27 00:28 INFO  MusicSchoolApplication:16 - App started
+2022-01-27 00:28 INFO  MusicSchoolApplication:16 - App started
+2022-01-27 00:31 INFO  RegistrationController:33 - USER with username 'testov' has successfully  registered
+2022-01-27 00:32 INFO  MainController:71 - ADMIN with username 'admin' and with id '2' has successfully logged into App 
+2022-01-27 00:34 INFO  MusicSchoolApplication:16 - App started
+2022-01-27 00:34 INFO  MusicSchoolApplication:16 - App started
+2022-01-27 00:35 INFO  RegistrationController:33 - USER with username 'testov2' has successfully  registered

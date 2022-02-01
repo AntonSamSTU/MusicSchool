@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>greeting</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<p th:text="'Hello, ' + ${about} + '!'"/>
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <form th:action="@{/main}" method="get">
+        <p>На главную</p>
+        <input type="submit" value="To Main" class="button" />
+      </form>
+      <div>
+        <p th:text="'Hello, ' + ${about} + '!'" />
+      </div>
+    </header>
 
-</body>
-<footer>
-    <p>Авторизация</p>
-    <a href="/login"> <input type="submit" value="Login" class="button"/> </a>
-
- </footer>
+    <div class="autorize">
+      <h4>Авторизация</h4>
+      <a href="/login" class="center_button">
+        <input type="submit" value="Login" class="button" />
+      </a>
+    </div>
+  </body>
 </html>

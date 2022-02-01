@@ -1,48 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Main</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<p th:text="'Hello, ' + ${about} + '!'"/>
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
 
-</body>
-<footer>
+  <body>
+    <header>
+      <p th:text="'Hello, ' + ${about} + '!'" />
 
-    <form th:action="@{/main}" method="post">
+      <form th:action="@{/main}" method="post">
         <p>Личный кабинет</p>
-        <input type="submit" value="Personal account" class="button"/>
-    </form>
-    <form th:action="@{/chat}" method="get">
+        <input type="submit" value="Personal account" class="button" />
+      </form>
+      <form th:action="@{/chat}" method="get">
         <p>Чат</p>
-        <input type="submit" value="Chat" class="button"/>
-    </form>
+        <input type="submit" value="Chat" class="button" />
+      </form>
 
-    <form th:action="@{/logout}" method="post">
+      <form th:action="@{/logout}" method="post">
         <p>Выйти</p>
-        <input type="submit" value="Sign out" class="button"/>
-    </form>
+        <input type="submit" value="Sign out" class="button" />
+      </form>
+    </header>
 
-    <div><table th:action="@{/main}" method="get" class="table">
-        <caption>Уведомления!</caption>
+    <div>
+      <table th:action="@{/main}" method="get" class="table">
+        <caption>
+          <h3>Список уведомлений</h3>
+        </caption>
         <tr class="thead">
-            <th>sender</th>
-            <th>text</th>
-            <th>timestamps</th>
-            <th>notification read, delete</th>
+          <th>sender</th>
+          <th>text</th>
+          <th>timestamps</th>
+          <th>notification read, delete</th>
         </tr>
         <tr th:each="message : ${notifications}" class="tbody">
+          <td th:utext="${message.sender}">sender</td>
+          <td th:utext="${message.text}">text</td>
+          <td th:utext="${message.timestamps}">timestamps</td>
+          <td>
+            <form
+              th:action="@{/main/delete/{messageID}(messageID=${message.id})}"
+              method="post"
+            >
+              <input type="hidden" name="action" value="delete" />
+              <button type="submit" class="button">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </table>
+    </div>
 
-            <td th:utext="${message.sender}">sender</td>
-            <td th:utext="${message.text}">text</td>
-            <td th:utext="${message.timestamps}">timestamps</td>
-            <td>
-                <form th:action="@{/main/delete/{messageID}(messageID=${message.id})}" method="post">
-                    <input type="hidden" name="action" value="delete"/>
-                    <button type="submit" class="button">Delete</button>
-                </form></td>
-    </table></div>
-</footer>
+    <footer class="footer"></footer>
+  </body>
 </html>

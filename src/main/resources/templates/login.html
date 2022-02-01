@@ -1,24 +1,45 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <title>Login</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="https://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+  <head>
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <p>Login Page</p>
+    </header>
 
-Login page
+    <form id="formLog" th:action="@{/login}" method="post" class="autorize">
+        <h4>Авторизация</h4>
+      <div>
+        <label class="label_autorize"> User Name: </label>
+        <input class="input_autorize" type="text" name="username" />
+      </div>
+      <div>
+        <label class="label_autorize"> Password: </label>
+        <input class="input_autorize" type="password" name="password" />
+      </div>
+      <div>
+        <input type="submit" value="Sign In" class="button" form="formLog" />
+      </div>
+    </form>
 
-<form id="formLog" th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In" class="button" form="formLog"/></div>
-</form>
-<a href="/registration"> <input type="submit" value="Registration" class="button"/></a>
-</body>
-
-
-<footer>
-    <a href="/"> <input type="submit" value="To Greeting" class="button"/> </a>
-</footer>
+    <div class="buttons">
+      <div style="display: inline-block; padding: 3px;"> 
+        <a href="/registration">
+          <input type="submit" value="Registration" class="button" />
+        </a>
+      </div>
+      <div style="display: inline-block; padding: 3px;">
+        <a href="/">
+          <input type="submit" value="To Greeting" class="button" />
+        </a>
+      </div>
+    </div>
+        </div>
+  </body>
 </html>

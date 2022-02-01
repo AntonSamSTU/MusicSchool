@@ -1,61 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Admin</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<a href="/main"> <input type="submit" value="To Main" class="button"/> </a>
-<form th:action="@{/chat}" method="get">
-    <input type="submit" value="Chat" class="button"/>
-</form>
-<form th:action="@{/admin}" method="get">
-    <p th:text="${about}"></p>
-</form>
-<table border="1" class="table">
-    <caption><h3>Users</h3></caption>
-    <tr class="thead">
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <form th:action="@{/main}" method="get">
+        <p>На главную</p>
+        <input type="submit" value="To Main" class="button" />
+      </form>
+      <form th:action="@{/chat}" method="get">
+        <p>Чат</p>
+        <input type="submit" value="Chat" class="button" />
+      </form>
+      <form th:action="@{/admin}" method="get">
+        <p>Информация:</p>
+        <p th:text="${about}"></p>
+      </form>
+    </header>
+
+    <table border="1" class="table">
+      <caption>
+        <h3>Пользователи</h3>
+      </caption>
+      <tr class="thead">
         <th>id</th>
         <th>username</th>
         <th>roles</th>
         <th>specialization</th>
         <th>delete user</th>
         <th>update role</th>
-
-
-    </tr>
-    <tr th:each="user : ${users}" class="tbody">
-
+      </tr>
+      <tr th:each="user : ${users}" class="tbody">
         <!--      <td th:utext="${lesson.id}">id</td> -->
         <td th:utext="${user.id}">id</td>
         <td th:utext="${user.username}">id</td>
         <td th:utext="${user.roles}">roles</td>
         <td th:utext="${user.specialization}">specialization</td>
         <td>
-            <form th:action="@{/admin/delete/{userID}(userID=${user.id})}" method="post">
-                <input type="hidden" name="action" value="delete"/>
-                <button type="submit" class="button">Delete</button>
-            </form>
+          <form
+            th:action="@{/admin/delete/{userID}(userID=${user.id})}"
+            method="post"
+          >
+            <input type="hidden" name="action" value="delete" />
+            <button type="submit" class="button">Delete</button>
+          </form>
         </td>
         <td>
-            <form th:action="@{/admin/update/{userID}(userID=${user.id})}" method="post">
-                <select type="text" name="roleString" required>
-                    <option value="">Выбрать</option>
-                    <option value="TEACHER">TEACHER</option>
-                    <option value="STUDENT">STUDENT</option>
-                    <option value="ADMIN">ADMIN</option>
-                </select>
-                <input type="hidden" name="action" value="update"/>
-                <button type="submit" class="button">Update</button>
-            </form>
+          <form
+            th:action="@{/admin/update/{userID}(userID=${user.id})}"
+            method="post"
+          >
+            <select type="text" name="roleString" required>
+              <option value="">Выбрать</option>
+              <option value="TEACHER">TEACHER</option>
+              <option value="STUDENT">STUDENT</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+            <input type="hidden" name="action" value="update" />
+            <button type="submit" class="button">Update</button>
+          </form>
         </td>
-
-
-</table>
-
-</body>
-<footer>
-
-</footer>
+      </tr>
+    </table>
+  </body>
+  <footer></footer>
 </html>

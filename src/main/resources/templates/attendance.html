@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Attendance</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<p>Назад в личный кабинет учителя</p>
-<a href="/teacher"> <input type="submit" value="Step Back" class="button"/> </a>
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <form th:action="@{/teacher}" method="get">
+        <p>Назад в личный кабинет учителя</p>
+        <input type="submit" value="Step Back" class="button" />
+      </form>
+    </header>
 
-<form th:action="@{/attendance/{lessonId}(lessonId=${lesson.id})}" method="post">
-    <table border="1" class="table">
-        <caption><h3>Students</h3></caption>
+    <form
+      th:action="@{/attendance/{lessonId}(lessonId=${lesson.id})}"
+      method="post"
+    >
+      <table border="1" class="table">
+        <caption>
+          <h3>Students</h3>
+        </caption>
         <tr class="thead">
-            <th>username</th>
-            <th>Отметить студента</th>
+          <th>username</th>
+          <th>Отметить студента</th>
         </tr>
         <tr th:each="student : ${students}" class="tbody">
+          <td th:utext="${student.username}">id</td>
 
-            <td th:utext="${student.username}">id</td>
-
-            <td>
-                <input type="checkbox" name="action" th:value="${student.id}"  />
-            </td>
+          <td>
+            <input type="checkbox" name="action" th:value="${student.id}" />
+          </td>
         </tr>
-
-    </table>
-    <p>Подтвердить выбор</p>
-    <button type="submit" class="button">Update</button>
-</form>
-</body>
-<footer>
-
-</footer>
+      </table>
+      <p>Подтвердить выбор</p>
+      <button type="submit" class="button">Подтвердить</button>
+    </form>
+  </body>
+  <footer></footer>
 </html>

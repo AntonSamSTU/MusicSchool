@@ -1,72 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Студент</title>
 
-    <link rel="stylesheet" href="/css/style.css">
-
-</head>
-<body>
-  <a href="/main"> <input type="submit" value="To Main" class="button" /> </a>
-  <form th:action="@{/chat}" method="get">
-      <input type="submit" value="Chat" class="button"/>
-  </form>
-<form th:action="@{/student}" method="get">
-    <p th:text="${message}"/>
-</form>
-  <div>
-      <h3>Добавление персонального урока</h3>
-      <form th:action="@{/student/addLesson}" method="post">
-          <input type="text" name="execution" placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' "/>
-
-          <select id="teacher" name="teacher" required>
-              <option value="" class="button">Select Teacher</option>
-              <option th:each="teacher : ${teachers}" th:value="${teacher}" th:text="${teacher}"></option>
-          </select>
-          <button type="submit" class="button">Добавить</button>
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <form th:action="@{/main}" method="get">
+        <p>На главную</p>
+        <input type="submit" value="To Main" class="button" />
       </form>
-  </div>
+      <form th:action="@{/chat}" method="get">
+        <p>Чат</p>
+        <input type="submit" value="Chat" class="button" />
+      </form>
+      <form th:action="@{/student}" method="get">
+        <p>Сообщение:</p>
+        <p th:text="${message}" />
+      </form>
+    </header>
 
-  <table border="1" class="table">
-      <caption><h3>Список индивидуальных занятий</h3></caption>
+    <div>
+      <form th:action="@{/student/addLesson}" method="post">
+        <h3>Добавление персонального урока</h3>
+        <input
+          type="text"
+          name="execution"
+          placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' "
+        />
+
+        <select id="teacher" name="teacher" required>
+          <option value="" class="button">Select Teacher</option>
+          <option
+            th:each="teacher : ${teachers}"
+            th:value="${teacher}"
+            th:text="${teacher}"
+          ></option>
+        </select>
+        <button type="submit" class="button">Добавить</button>
+      </form>
+    </div>
+
+    <table border="1" class="table">
+      <caption>
+        <h3>Список индивидуальных занятий</h3>
+      </caption>
       <tr class="thead">
-          <!--   <th>id</th> -->
-          <th>teacher</th>
-          <th>execution</th>
-          <th>specialization</th>
-          <th>students</th>
-          <th>delete lesson</th>
-         <!-- <th>add yourself</th> -->
-
+        <!--   <th>id</th> -->
+        <th>teacher</th>
+        <th>execution</th>
+        <th>specialization</th>
+        <th>students</th>
+        <th>delete lesson</th>
+        <!-- <th>add yourself</th> -->
       </tr>
       <tr th:each="lesson : ${lessonsIndividual}" class="tbody">
-
-          <!--      <td th:utext="${lesson.id}">id</td> -->
-          <td th:utext="${lesson.teacher}">teacher</td>
-          <td th:utext="${lesson.execution}">execution</td>
-          <td th:utext="${lesson.specialization}">specialization</td>
-          <td th:utext="${lesson.users}">students</td>
-          <td>
-              <form th:action="@{/student/delete/{lessonId}(lessonId=${lesson.id})}" method="post">
-                  <input type="hidden" name="action" value="deleteLesson"/>
-                  <button type="submit"  class="button" >Delete</button>
-
-              </form>
-          </td>
+        <!--      <td th:utext="${lesson.id}">id</td> -->
+        <td th:utext="${lesson.teacher}">teacher</td>
+        <td th:utext="${lesson.execution}">execution</td>
+        <td th:utext="${lesson.specialization}">specialization</td>
+        <td th:utext="${lesson.users}">students</td>
+        <td>
+          <form
+            th:action="@{/student/delete/{lessonId}(lessonId=${lesson.id})}"
+            method="post"
+          >
+            <input type="hidden" name="action" value="deleteLesson" />
+            <button type="submit" class="button">Delete</button>
+          </form>
+        </td>
         <!--  <td>
               <form th:action="@{/student/add/{lessonId}(lessonId=${lesson.id})}" method="post">
                   <input type="hidden" name="action" value="add"/>
                   <button type="submit" class="button">add</button>
               </form>
           </td> -->
+      </tr>
+    </table>
 
-
-  </table>
-
-<table border="1" class="table">
-    <caption><h3>Список груповых занятий</h3></caption>
-    <tr class="thead">
+    <table border="1" class="table">
+      <caption>
+        <h3>Список груповых занятий</h3>
+      </caption>
+      <tr class="thead">
         <!--   <th>id</th> -->
         <th>teacher</th>
         <th>execution</th>
@@ -74,37 +92,33 @@
         <th>students</th>
         <th>delete yourself</th>
         <th>add yourself</th>
-
-    </tr>
-    <tr th:each="lesson : ${lessons}" class="tbody">
-
+      </tr>
+      <tr th:each="lesson : ${lessons}" class="tbody">
         <!--      <td th:utext="${lesson.id}">id</td> -->
         <td th:utext="${lesson.teacher}">teacher</td>
         <td th:utext="${lesson.execution}">execution</td>
         <td th:utext="${lesson.specialization}">specialization</td>
         <td th:utext="${lesson.users}">students</td>
         <td>
-            <form th:action="@{/student/delete/{lessonId}(lessonId=${lesson.id})}" method="post">
-                <input type="hidden" name="action" value="delete"/>
-                <button type="submit"  class="button" >Delete</button>
-
-            </form>
+          <form
+            th:action="@{/student/delete/{lessonId}(lessonId=${lesson.id})}"
+            method="post"
+          >
+            <input type="hidden" name="action" value="delete" />
+            <button type="submit" class="button">Delete</button>
+          </form>
         </td>
         <td>
-            <form th:action="@{/student/add/{lessonId}(lessonId=${lesson.id})}" method="post">
-                <input type="hidden" name="action" value="add"/>
-                <button type="submit" class="button">add</button>
-            </form>
+          <form
+            th:action="@{/student/add/{lessonId}(lessonId=${lesson.id})}"
+            method="post"
+          >
+            <input type="hidden" name="action" value="add" />
+            <button type="submit" class="button">add</button>
+          </form>
         </td>
-
-
-</table>
-
-
-
-
-</body>
-<footer>
-
-</footer>
+      </tr>
+    </table>
+  </body>
+  <footer></footer>
 </html>

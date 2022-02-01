@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Учитель</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <a href="/main"> <input type="submit" value="To Main" class="button"/> </a>
-</head>
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
 
-<body>
-<form th:action="@{/chat}" method="get">
-    <input type="submit" value="Chat" class="button"/>
-</form>
-<form th:action="@{/teacher}" method="get">
-    <p th:text="${about}"></p>
-</form>
-<div>
-    <form th:action="@{/teacher}" method="post">
+  <body>
+    <header>
+      <form th:action="@{/main}" method="get">
+        <p>На главную</p>
+        <input type="submit" value="To Main" class="button" />
+      </form>
+      <form th:action="@{/chat}" method="get">
+        <p>Чат</p>
+        <input type="submit" value="Chat" class="button" />
+      </form>
+      <form th:action="@{/teacher}" method="get">
+        <p>Преподаватель:</p>
+        <p th:text="${about}"></p>
+      </form>
+    </header>
+
+    <div>
+      <form th:action="@{/teacher}" method="post">
         <h3>Добавление нового группового урока</h3>
-        <input type="text" name="execution" placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' "/>
+        <input
+          type="text"
+          name="execution"
+          placeholder="Введите время выполнения 'yyyy-MM-dd HH:mm' "
+        />
 
         <!--    <input type="text" name="specialization" placeholder="Введите специализацию"> -->
         <button type="submit" class="button">Добавить</button>
-    </form>
-</div>
+      </form>
+    </div>
 
-
-
-<table border="1" class="table">
-    <caption><h3>Список Ваших групповых занятий</h3></caption>
-    <tr class="thead">
+    <table border="1" class="table">
+      <caption>
+        <h3>Список Ваших групповых занятий</h3>
+      </caption>
+      <tr class="thead">
         <th>id</th>
         <th>teacher</th>
         <th>execution</th>
@@ -37,41 +49,53 @@
         <th>delete</th>
         <th>update lesson's time</th>
         <th>attendance</th>
-    </tr>
-    <tr th:each="lesson : ${lessonsGroup}" class="tbody">
-
+      </tr>
+      <tr th:each="lesson : ${lessonsGroup}" class="tbody">
         <td th:utext="${lesson.id}">id</td>
         <td th:utext="${lesson.teacher}">teacher</td>
         <td th:utext="${lesson.execution}">execution</td>
         <td th:utext="${lesson.specialization}">specialization</td>
         <td th:utext="${lesson.users}">students</td>
         <td>
-            <form th:action="@{/teacher/delete/{lessonId}(lessonId=${lesson.id})}" method="post">
-                <input type="hidden" name="action" value="delete"/>
-                <button type="submit" class="button">Delete</button>
-            </form>
+          <form
+            th:action="@{/teacher/delete/{lessonId}(lessonId=${lesson.id})}"
+            method="post"
+          >
+            <input type="hidden" name="action" value="delete" />
+            <button type="submit" class="button">Delete</button>
+          </form>
         </td>
         <td>
-            <form th:action="@{/teacher/update/{lessonId}(lessonId=${lesson.id})}" method="post">
-
-                <p th:text="${message}"/>
-                <input type="hidden" name="action" value="update"/>
-                <input type="text" name="execution" placeholder="'yyyy-MM-dd HH:mm'"/>
-                <button type="submit" class="button">Update</button>
-            </form>
+          <form
+            th:action="@{/teacher/update/{lessonId}(lessonId=${lesson.id})}"
+            method="post"
+          >
+            <p th:text="${message}" />
+            <input type="hidden" name="action" value="update" />
+            <input
+              type="text"
+              name="execution"
+              placeholder="'yyyy-MM-dd HH:mm'"
+            />
+            <button type="submit" class="button">Update</button>
+          </form>
         </td>
         <td>
-            <form th:action="@{/attendance/{lessonId}(lessonId=${lesson.id})}" method="get">
-                <input type="submit" value="Attendance" class="button"/>
-            </form>
+          <form
+            th:action="@{/attendance/{lessonId}(lessonId=${lesson.id})}"
+            method="get"
+          >
+            <input type="submit" value="Attendance" class="button" />
+          </form>
         </td>
+      </tr>
+    </table>
 
-</table>
-
-
-<table border="1" class="table">
-    <caption><h3>Список Ваших индивидуальных занятий</h3></caption>
-    <tr class="thead">
+    <table border="1" class="table">
+      <caption>
+        <h3>Список Ваших индивидуальных занятий</h3>
+      </caption>
+      <tr class="thead">
         <th>id</th>
         <th>teacher</th>
         <th>execution</th>
@@ -79,55 +103,59 @@
         <th>students</th>
         <th>delete</th>
         <th>update lesson's time</th>
-    </tr>
-    <tr th:each="lesson : ${lessonsIndividual}" class="tbody">
-
+      </tr>
+      <tr th:each="lesson : ${lessonsIndividual}" class="tbody">
         <td th:utext="${lesson.id}">id</td>
         <td th:utext="${lesson.teacher}">teacher</td>
         <td th:utext="${lesson.execution}">execution</td>
         <td th:utext="${lesson.specialization}">specialization</td>
         <td th:utext="${lesson.users}">students</td>
         <td>
-            <form th:action="@{/teacher/delete/{lessonId}(lessonId=${lesson.id})}" method="post">
-                <input type="hidden" name="action" value="delete"/>
-                <button type="submit" class="button">Delete</button>
-            </form>
+          <form
+            th:action="@{/teacher/delete/{lessonId}(lessonId=${lesson.id})}"
+            method="post"
+          >
+            <input type="hidden" name="action" value="delete" />
+            <button type="submit" class="button">Delete</button>
+          </form>
         </td>
         <td>
-            <form th:action="@{/teacher/update/{lessonId}(lessonId=${lesson.id})}" method="post">
-
-                <p th:text="${message}"/>
-                <input type="hidden" name="action" value="update"/>
-                <input type="text" name="execution" placeholder="'yyyy-MM-dd HH:mm'"/>
-                <button type="submit" class="button">Update</button>
-            </form>
+          <form
+            th:action="@{/teacher/update/{lessonId}(lessonId=${lesson.id})}"
+            method="post"
+          >
+            <p th:text="${message}" />
+            <input type="hidden" name="action" value="update" />
+            <input
+              type="text"
+              name="execution"
+              placeholder="'yyyy-MM-dd HH:mm'"
+            />
+            <button type="submit" class="button">Update</button>
+          </form>
         </td>
-    </tr>
+      </tr>
+    </table>
 
-</table>
-
-<table border="1" class="table">
-    <caption><h3>Список всех групповых занятий</h3></caption>
-    <tr class="thead">
+    <table border="1" class="table">
+      <caption>
+        <h3>Список всех групповых занятий</h3>
+      </caption>
+      <tr class="thead">
         <th>id</th>
         <th>teacher</th>
         <th>execution</th>
         <th>specialization</th>
         <th>students</th>
-    </tr>
-    <tr th:each="lesson : ${lessons}" class="tbody">
-
+      </tr>
+      <tr th:each="lesson : ${lessons}" class="tbody">
         <td th:utext="${lesson.id}">id</td>
         <td th:utext="${lesson.teacher}">teacher</td>
         <td th:utext="${lesson.execution}">execution</td>
         <td th:utext="${lesson.specialization}">specialization</td>
         <td th:utext="${lesson.users}">students</td>
-
-
-</table>
-
-</body>
-<footer>
-
-</footer>
+      </tr>
+    </table>
+  </body>
+  <footer></footer>
 </html>
